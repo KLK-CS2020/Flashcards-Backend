@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Flashcards.Domain.IRepositories;
+using Flashcards.Security.Models;
 using Flashcards_backend.Core.Models;
 
 
@@ -25,6 +26,18 @@ namespace Flashcards.Security.Repositories
                 PasswordHash = u.PasswordHash,
                 PasswordSalt = u.PasswordSalt
             }).ToList();
+        }
+
+        public bool Create(User user)
+        {
+            var createdUser = _context.LoginUsers.Add(new LoginUser()
+            {
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                PasswordSalt = user.PasswordSalt
+            });
+            _context.SaveChanges();
+            return createdUser != null;
         }
     }
 }

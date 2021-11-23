@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Flashcards.Domain.IRepositories;
 using Flashcards.Security.Models;
+using Flashcards_backend.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -62,6 +63,25 @@ namespace Flashcards.Security
 
 
 
+        }
+
+        public bool Create(string loginDtoEmail, string loginDtoPassword)
+        {
+            _authenticationHelper.CreatePasswordHash(loginDtoPassword,
+                out var hash, out var salt);
+            return _repo.Create(new User
+            {
+                Email = loginDtoEmail,
+                PasswordHash = hash,
+                PasswordSalt = salt
+            });
+
+        }
+
+        public bool EmailExists(string email)
+        {
+            var user = _repo.GetAll().FirstOrDefault(user => user.Email.Equals(email));
+            return user != null;
         }
     }
 }

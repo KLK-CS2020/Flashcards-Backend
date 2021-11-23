@@ -19,11 +19,7 @@ namespace Flashcards.WebApi.Controllers
         {
             _securityService = securityService;
         }
-        /*private readonly IUserAuthenticator _userAuthenticator;
-        public AuthController(IUserAuthenticator userAuthenticator)
-        {
-            _userAuthenticator = userAuthenticator;
-        }*/
+       
 
         // POST: api/Login
         [AllowAnonymous] //people cant log in not being logged in
@@ -37,6 +33,16 @@ namespace Flashcards.WebApi.Controllers
                 Message = token.Message
             };
             
+        }
+        
+        [AllowAnonymous]
+        [HttpPost(nameof(Register))]
+        public ActionResult<Boolean> Register([FromBody] LoginDto loginDto)
+        {
+            var exists = _securityService.EmailExists(loginDto.Email);
+            if(exists)
+                 return BadRequest("Email already exists");
+            return _securityService.Create(loginDto.Email, loginDto.Password);
         }
 
     }

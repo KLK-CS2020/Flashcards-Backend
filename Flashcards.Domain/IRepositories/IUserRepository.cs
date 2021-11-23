@@ -7,5 +7,6 @@ namespace Flashcards.Domain.IRepositories
     public interface IUserRepository
     {
         List<User> GetAll();
+        bool Create(User user);
     }
 }
