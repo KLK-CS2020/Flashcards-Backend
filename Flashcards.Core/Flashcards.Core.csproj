@@ -5,9 +5,4 @@
         <RootNamespace>Flashcards_backend.Core</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="IServices" />
-      <Folder Include="Models" />
-    </ItemGroup>
-
 </Project>
