@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flashcards.Core", "Flashcards.Core\Flashcards.Core.csproj", "{43646E62-2951-4874-8DB6-EF1D1390AD04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{1B2C0CA2-8236-48D5-8ADC-2CFBABB37F82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{C02621D1-1475-4829-A4DA-5452AD5A931D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{E3D8CFF7-49F0-4E05-A43F-31A17C6FFA13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core-Test", "Core-Test", "{74069D23-FAE2-41CA-A2E8-CEE3971B4672}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure-Test", "Infrastructure-Test", "{D9209F01-520A-4712-967E-CB52105980E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation-Test", "Presentation-Test", "{A9A4215C-0F5B-4EB5-A6BC-7D9B18407289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flashcards.Domain", "Flashcards.Domain\Flashcards.Domain.csproj", "{96BB9FA4-705F-4BC3-9D15-0553045A48A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flashcards.DataAccess", "Flashcards.DataAccess\Flashcards.DataAccess.csproj", "{6E4D81BE-5A44-4132-A41D-E62D095E8824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flashcards.WebApi", "Flashcards.WebApi\Flashcards.WebApi.csproj", "{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flashcards.Security", "Flashcards.Security\Flashcards.Security.csproj", "{E04377DF-4999-44DB-B8AC-B3523B80655E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43646E62-2951-4874-8DB6-EF1D1390AD04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43646E62-2951-4874-8DB6-EF1D1390AD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43646E62-2951-4874-8DB6-EF1D1390AD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43646E62-2951-4874-8DB6-EF1D1390AD04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96BB9FA4-705F-4BC3-9D15-0553045A48A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96BB9FA4-705F-4BC3-9D15-0553045A48A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96BB9FA4-705F-4BC3-9D15-0553045A48A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96BB9FA4-705F-4BC3-9D15-0553045A48A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E4D81BE-5A44-4132-A41D-E62D095E8824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4D81BE-5A44-4132-A41D-E62D095E8824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E4D81BE-5A44-4132-A41D-E62D095E8824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4D81BE-5A44-4132-A41D-E62D095E8824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E04377DF-4999-44DB-B8AC-B3523B80655E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E04377DF-4999-44DB-B8AC-B3523B80655E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E04377DF-4999-44DB-B8AC-B3523B80655E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E04377DF-4999-44DB-B8AC-B3523B80655E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{43646E62-2951-4874-8DB6-EF1D1390AD04} = {1B2C0CA2-8236-48D5-8ADC-2CFBABB37F82}
+		{96BB9FA4-705F-4BC3-9D15-0553045A48A3} = {1B2C0CA2-8236-48D5-8ADC-2CFBABB37F82}
+		{6E4D81BE-5A44-4132-A41D-E62D095E8824} = {C02621D1-1475-4829-A4DA-5452AD5A931D}
+		{E0821394-1FEC-4BDD-A37B-FF5FBD7DE0C2} = {E3D8CFF7-49F0-4E05-A43F-31A17C6FFA13}
+		{E04377DF-4999-44DB-B8AC-B3523B80655E} = {C02621D1-1475-4829-A4DA-5452AD5A931D}
+	EndGlobalSection
+EndGlobal
