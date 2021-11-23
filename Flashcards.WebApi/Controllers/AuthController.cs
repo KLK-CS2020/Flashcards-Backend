@@ -30,20 +30,13 @@ namespace Flashcards.WebApi.Controllers
         [HttpPost(nameof(Login))]
         public ActionResult<TokenDto> Login([FromBody] LoginDto loginDto)
         {
-            var token = _securityService.generateJwtToken(loginDto.Email, loginDto.Password);
+            var token = _securityService.GenerateJwtToken(loginDto.Email, loginDto.Password);
             return new TokenDto
             {
                 Jwt = token.Jwt,
                 Message = token.Message
             };
-
-            /*string userToken;
-            if (_userAuthenticator.Login(loginDto.Email, loginDto.Password, out userToken))
-            {
-                //Authentication successful
-                return Ok(new TokenDto{Jwt = userToken});
-            }
-            return Unauthorized("Unknown username and password combination");*/
+            
         }
 
     }

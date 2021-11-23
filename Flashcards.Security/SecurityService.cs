@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
+using Flashcards.Domain.IRepositories;
 using Flashcards.Security.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -9,30 +11,57 @@ namespace Flashcards.Security
 {
     public class SecurityService: ISecurityService
     {
-        public SecurityService(IConfiguration configuration)
+        private readonly IUserRepository _repo;
+        private readonly IAuthenticationHelper _authenticationHelper;
+
+        public SecurityService(IConfiguration configuration, 
+            IUserRepository repository,  IAuthenticationHelper authenticationHelper)
         {
             Configuration = configuration;
+            _repo = repository;
+            _authenticationHelper = authenticationHelper;
         }
 
         public IConfiguration Configuration { get; }
 
-        public JwtToken generateJwtToken(string email, string password)
+        public JwtToken GenerateJwtToken(string email, string password)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                Configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(Configuration["Jwt:Issuer"],
-                Configuration["Jwt:Audience"],
-                null,
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials
-            );
-            return new JwtToken(
+            var user = _repo.GetAll().FirstOrDefault(user => user.Email.Equals(email));
+            if(user == null)
+                return new JwtToken()
+                {
+                    Message = "User or password not correct"
+                };
+
+            
+            //Did we not find a user with the given username?
+            if (_authenticationHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)
             )
             {
-                Jwt = new JwtSecurityTokenHandler().WriteToken(token),
-                Message = "ok"
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    Configuration["Jwt:Secret"]));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(Configuration["Jwt:Issuer"],
+                    Configuration["Jwt:Audience"],
+                    null,
+                    expires: DateTime.Now.AddMinutes(120),
+                    signingCredentials: credentials
+                );
+                return new JwtToken(
+                )
+                {
+                    Jwt = new JwtSecurityTokenHandler().WriteToken(token),
+                    Message = "ok"
+                };
+            }
+            //dont need else
+            return new JwtToken()
+            {
+                Message = "User or password not correct"
             };
+
+
+
         }
     }
 }

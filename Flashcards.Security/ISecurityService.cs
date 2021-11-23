@@ -4,6 +4,6 @@ namespace Flashcards.Security
 {
     public interface ISecurityService
     {
-        JwtToken generateJwtToken(string email, string password);
+        JwtToken GenerateJwtToken(string email, string password);
     }
 }
