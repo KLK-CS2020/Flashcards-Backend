@@ -12,5 +12,6 @@ namespace Flashcards.DataAccess
         
         public virtual DbSet<DeckEntity> Decks { get; set; }
         public virtual DbSet<CardEntity> Cards { get; set; }
+        public virtual DbSet<UserEntity> Users { get; set; }
     }
 }

@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-
-namespace Flashcards.DataAccess.Entities
+namespace Flashcards.WebApi.Dtos.Deck
 {
-    public class DeckEntity
+    public class GetDeckDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int UserId { get; set; }
-        public UserEntity UserEntity { get; set; }
+        public int NumberOfCards { get; set; }
         public bool isPublic { get; set; }
-        public List<CardEntity> Cards { get; set; }
     }
 }

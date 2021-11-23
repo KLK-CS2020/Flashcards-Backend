@@ -8,6 +8,7 @@ namespace Flashcards.DataAccess.Entities
         public string Question { get; set; }
         public string Answer { get; set; }
         public double Correctness { get; set; }
-        public Deck Deck { get; set; }
+        public int DeckId { get; set; }
+        public DeckEntity Deck { get; set; }
     }
 }

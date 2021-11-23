@@ -5,12 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.12" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Flashcards.Core\Flashcards.Core.csproj" />
+      <ProjectReference Include="..\Flashcards.DataAccess\Flashcards.DataAccess.csproj" />
+      <ProjectReference Include="..\Flashcards.Domain\Flashcards.Domain.csproj" />
     </ItemGroup>
 
 </Project>
