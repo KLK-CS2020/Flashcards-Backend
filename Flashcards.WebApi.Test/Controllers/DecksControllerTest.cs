@@ -1,73 +1,80 @@
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Flashcards_backend.Core.IServices;
+using Flashcards.WebApi.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Xunit;
+
 namespace Flashcards.Presentation_Test.Controllers
 {
     public class DecksControllerTest
     {
-        /*
+        
         private readonly DecksController _controller;
         private readonly Mock<IDeckService> _mockService;
 
         public DecksControllerTest()
         {
-           _mockService = new Mock<IProductService>();
-           _controller = new ProductController(_mockService.Object);
+           _mockService = new Mock<IDeckService>();
+           _controller = new DecksController(_mockService.Object);
         }
         
         #region controller initialization
         
         [Fact]
-        public void ProductController_IsOfTypeControllerBase()
+        public void DecksController_IsOfTypeControllerBase()
         {
             Assert.IsAssignableFrom<ControllerBase>(_controller);
         }
 
         [Fact]
-        public void ProductController_UsesApiControllerAttribute()
+        public void DecksController_UsesApiControllerAttribute()
         {
-            var typeInfo = typeof(ProductController).GetTypeInfo();
+            var typeInfo = typeof(DecksController).GetTypeInfo();
             var attribute = typeInfo.GetCustomAttributes()
                 .FirstOrDefault(a => a.GetType().Name.Equals("ApiControllerAttribute"));
             Assert.NotNull(attribute);
         }
         
         [Fact]
-        public void ProductController_UsesRouteAttribute_WithParamApiControllerNameRoute()
+        public void DecksController_UsesRouteAttribute_WithParamApiControllerNameRoute()
         {
-            //Arrange
-            var typeInfo = typeof(ProductController).GetTypeInfo();
+            var typeInfo = typeof(DecksController).GetTypeInfo();
             var attr = typeInfo.GetCustomAttributes().FirstOrDefault(a => a.GetType()
                 .Name.Equals("RouteAttribute"));
-            //Assert
+            
             var routeAttr = attr as RouteAttribute;
-            Assert.Equal("api/[Controller]", routeAttr.Template);
+            Assert.Equal("api/[controller]", routeAttr.Template);
         }
         
         [Fact]
-        public void ProductController_UsesRouteAttribute()
+        public void DecksController_UsesRouteAttribute()
         {
-            //Arrange
-            var typeInfo = typeof(ProductController).GetTypeInfo();
+            var typeInfo = typeof(DecksController).GetTypeInfo();
             var attr = typeInfo.GetCustomAttributes().FirstOrDefault(a => a.GetType()
                 .Name.Equals("RouteAttribute"));
-            //Assert
+            
             Assert.NotNull(attr);
         }
         
         [Fact]
-        public void ProductController_WithNullProductService_ThrowsInvalidDataException()
+        public void DecksController_WithNullProductService_ThrowsInvalidDataException()
         {
             Assert.Throws<InvalidDataException>(
-                () => new ProductController(null));
+                () => new DecksController(null));
         }
         
         [Fact]
-        public void ProductController_WithNullProductService_ThrowsInvalidDataExceptionWithMessage()
+        public void DecksController_WithNullProductService_ThrowsInvalidDataExceptionWithMessage()
         {
             var exception = Assert.Throws<InvalidDataException>(
-                () => new ProductController(null));
-            Assert.Equal("Product service cannot be null", exception.Message);
+                () => new DecksController(null));
+            Assert.Equal("Deck service cannot be null", exception.Message);
         }
         
         #endregion
-        */
+        
     }
 }
