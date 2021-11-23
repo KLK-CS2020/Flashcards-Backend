@@ -35,26 +35,14 @@ namespace Flashcards.WebApi
 
         public IConfiguration Configuration { get; }
 
-          // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-         //  var value = Configuration["JwtConfig:secret"];
+            //  var value = Configuration["JwtConfig:secret"];
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Flashcards.WebApi", Version = "v1"});
-            });
-
-            services.AddScoped<IDeckService, DeckService>();
-            services.AddScoped<IDeckRepository, DeckRepository>();
-            services.AddScoped<ICardService, CardService>();
-            services.AddScoped<ICardRepository, CardRepository>();
-            
-            services.AddDbContext<MainDbContext>(options =>
-            {
-                options.UseSqlite("Data Source=main.db");
-            });
-        }
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -64,6 +52,7 @@ namespace Flashcards.WebApi
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using Bearer scheme"
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -75,11 +64,19 @@ namespace Flashcards.WebApi
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        new string[] { }
                     }
                 });
             });
-            
+
+            services.AddScoped<IDeckService, DeckService>();
+            services.AddScoped<IDeckRepository, DeckRepository>();
+            services.AddScoped<ICardService, CardService>();
+            services.AddScoped<ICardRepository, CardRepository>();
+
+            services.AddDbContext<MainDbContext>(options => { options.UseSqlite("Data Source=main.db"); });
+
+
             services.AddAuthentication(authenticationOptions =>
                 {
                     authenticationOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,7 +87,7 @@ namespace Flashcards.WebApi
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = 
+                        IssuerSigningKey =
                             new SymmetricSecurityKey(
                                 Encoding.UTF8.GetBytes(Configuration["Jwt:Secret"])),
                         ValidateIssuer = true,
@@ -104,15 +101,14 @@ namespace Flashcards.WebApi
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 
-            services.AddDbContext<SecurityContext>(options =>
-            {
-                options.UseSqlite("Data Source = auth.db");
-            });
-
+            services.AddDbContext<SecurityContext>(options => { options.UseSqlite("Data Source = auth.db"); });
         }
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MainDbContext context)
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,  SecurityContext securityContext)
+
+
+// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SecurityContext securityContext,
+            MainDbContext context)
         {
             if (env.IsDevelopment())
             {
