@@ -5,4 +5,8 @@
         <RootNamespace>Flashcards_backend.Core</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+    </ItemGroup>
+
 </Project>
