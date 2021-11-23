@@ -22,7 +22,7 @@ namespace Flashcards.Domain.Services
         
         public List<Card> GetAllCardsByDeckId(int deckId)
         {
-            throw new System.NotImplementedException();
+           return _repo.ReadAllCardsByDeckId(deckId);
         }
 
         public Card Create(Card newCard)

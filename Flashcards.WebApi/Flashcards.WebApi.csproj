@@ -10,10 +10,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Flashcards.Core\Flashcards.Core.csproj" />
     </ItemGroup>
 
