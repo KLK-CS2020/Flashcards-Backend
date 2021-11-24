@@ -14,8 +14,9 @@ namespace Flashcards.Core.Test.IServices
             var service = new Mock<ICardService>().Object;
             Assert.NotNull(service);
         }
-        
+
         #region Delete
+
         [Fact]
         public void DeleteCard_WithParams_ReturnsDeletedProduct()
         {
@@ -23,8 +24,8 @@ namespace Flashcards.Core.Test.IServices
             var CardId = 1;
             serviceMoc.Setup(c => c.Delete(CardId)).Returns(new Card());
             Assert.NotNull(serviceMoc.Object);
-
         }
+
         #endregion
 
         #region Update
@@ -34,7 +35,7 @@ namespace Flashcards.Core.Test.IServices
         {
             var card = new Card
             {
-                Id = 1,Question ="Pig", Answer = "Malac",Correctness = 0
+                Id = 1, Question = "Pig", Answer = "Malac", Correctness = 0
             };
             var serviceMoc = new Mock<ICardService>();
 
@@ -51,13 +52,12 @@ namespace Flashcards.Core.Test.IServices
         public void ReadAllCardsByDeckId_ReturnsUpdated()
         {
             var deckId = new int();
-            var mock = new Mock<ICardService>(); 
+            var mock = new Mock<ICardService>();
             mock.Setup(s => s.GetAllCardsByDeckId(deckId))
-                .Returns(new List<Card>()); 
-            var service = mock.Object; 
+                .Returns(new List<Card>());
+            var service = mock.Object;
             Assert.Equal(new List<Card>(), service.GetAllCardsByDeckId(deckId));
         }
-        
 
         #endregion
     }
