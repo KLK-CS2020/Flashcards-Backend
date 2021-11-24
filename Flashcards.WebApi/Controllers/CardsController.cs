@@ -69,6 +69,7 @@ namespace Flashcards.WebApi.Controllers
             
             return Ok(_cardService.Create(new Card
             {
+                Id = dto.Id,
                 Question = dto.Question,
                 Answer = dto.Answer
             }));
