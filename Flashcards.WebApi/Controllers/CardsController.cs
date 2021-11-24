@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Flashcards.WebApi.Dtos.Card;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,26 +23,56 @@ namespace Flashcards.WebApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<List<Card>> GetAll([FromQuery] int deckId)
         {
-            throw new System.NotImplementedException();
+            return Ok(_cardService.GetAllCardsByDeckId(deckId));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Card> DeleteProduct(int id)
+        public ActionResult<CardInDeckDto> Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var card = _cardService.Delete(id);
+            var dto = new CardInDeckDto
+            {
+                Id = card.Id,
+                Question = card.Question,
+                Answer = card.Answer,
+                Correctness = card.Correctness
+            };
+            return Ok(dto);
         }
 
         [HttpPut]
-        public ActionResult<Card> Update()
+        public ActionResult<Card> Update([FromBody] PostCardDto dto)
         {
-            throw new System.NotImplementedException();
+            if (dto == null)
+                throw new InvalidDataException("Card cannot be null");
+            if (dto.Question is null or "")
+                return BadRequest("Question cannot be empty");
+            if (dto.Answer is null or "")
+                return BadRequest("Answer cannot be empty");
+            
+            return Ok(_cardService.Update(new Card
+            {
+                Question = dto.Question,
+                Answer = dto.Answer
+            }));
         }
 
         [HttpPost]
-        public ActionResult<Card> Create()
+        public ActionResult<Card> Create([FromBody] PostCardDto dto)
         {
-            throw new System.NotImplementedException();
+            if (dto == null)
+                throw new InvalidDataException("Card cannot be null");
+            if (dto.Question is null or "")
+                return BadRequest("Question cannot be empty");
+            if (dto.Answer is null or "")
+                return BadRequest("Answer cannot be empty");
+            
+            return Ok(_cardService.Create(new Card
+            {
+                Question = dto.Question,
+                Answer = dto.Answer
+            }));
         }
-
+        
     }
 }
