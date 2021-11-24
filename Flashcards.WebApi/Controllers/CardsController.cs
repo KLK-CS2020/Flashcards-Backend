@@ -20,8 +20,8 @@ namespace Flashcards.WebApi.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public ActionResult<List<Card>> GetAll([FromQuery] int deckId)
+        [HttpGet]
+        public ActionResult<List<CardInDeckDto>> GetAll([FromQuery] int deckId)
         {
             return Ok(_cardService.GetAllCardsByDeckId(deckId));
         }
@@ -58,7 +58,7 @@ namespace Flashcards.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Card> Create([FromBody] PostCardDto dto)
+        public ActionResult<PostCardDto> Create([FromBody] PostCardDto dto)
         {
             if (dto == null)
                 throw new InvalidDataException("Card cannot be null");
@@ -69,9 +69,9 @@ namespace Flashcards.WebApi.Controllers
             
             return Ok(_cardService.Create(new Card
             {
-                Id = dto.Id,
                 Question = dto.Question,
-                Answer = dto.Answer
+                Answer = dto.Answer,
+                Deck = new Deck{Id = dto.deckId}
             }));
         }
         

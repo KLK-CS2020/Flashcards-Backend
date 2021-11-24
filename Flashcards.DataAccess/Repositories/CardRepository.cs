@@ -29,8 +29,7 @@ namespace Flashcards.DataAccess.Repositories
                     {
                         Id = ca.Id,
                         Question = ca.Question,
-                        Answer = ca.Answer,
-                        Correctness = ca.Correctness
+                        Answer = ca.Answer
                     }).Where(c =>c.Deck.Id == deckId).ToList();
         }
 
