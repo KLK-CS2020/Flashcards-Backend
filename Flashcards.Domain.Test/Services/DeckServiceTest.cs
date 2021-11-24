@@ -88,6 +88,7 @@ namespace Flashcards.Domain.Test.Services
             Assert.Equal("Repository cannot be null",exception.Message);
         }
 
+        #region GetAllPublic
         [Fact]
         public void GetPublicDecks_CallsDecksRepository_ExactlyOnce()
         {
@@ -103,7 +104,78 @@ namespace Flashcards.Domain.Test.Services
             var actual = _service.GetAllPublic();
             Assert.Equal(_expected, actual);
         }
+        #endregion
 
+        #region GetByUserId
+
+        [Fact]
+        public void GetByUserId_ParameterUserId_ReturnListOfDecks()
+        {
+            var userId = 1;
+            _mock.Setup(r => r.GetByUserId(userId))
+                .Returns(_expected);
+            
+            var actual = _service.GetByUserId(userId);
+            
+            Assert.Equal(_expected, actual);
+        }
+
+        [Fact]
+        public void GetByUserId_ParameterLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetByUserId(-1));
+            Assert.Equal("userId cannot be less than 0", ex.Message);
+        }
+
+        [Fact]
+        public void GetByUserId_WithParams_CallsDeckRepositoryOnce()
+        {
+
+            var userId = 1;
+
+            _service.GetByUserId(userId);
+
+            _mock.Verify(r => r.GetByUserId(userId), Times.Once);
+        }
+        
+        #endregion
+        
+        #region GetByDeckId
+
+        [Fact]
+        public void GetByDeckId_ParameterUserId_ReturnsDeck()
+        {
+            var deckId = 1;
+            var expected = new Deck {Id = 1};
+            _mock.Setup(r => r.GetById(deckId))
+                .Returns(expected);
+            
+            var actual = _service.GetById(deckId);
+            
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetByDeckId_ParameterLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetById(-1));
+            Assert.Equal("deckId cannot be less than 0", ex.Message);
+        }
+
+        [Fact]
+        public void GetByDeckId_WithParams_CallsDeckRepositoryOnce()
+        {
+
+            var deckId = 1;
+
+            _service.GetById(deckId);
+
+            _mock.Verify(r => r.GetById(deckId), Times.Once);
+        }
+        
+
+        #endregion
+        
         #region Create
         [Fact]
         public void Create_ReturnsCreatedDeckWithId()
@@ -258,6 +330,98 @@ namespace Flashcards.Domain.Test.Services
             Assert.Equal("specified user doesnt exist", exception.Message);
         }
 
+        #endregion
+        
+        #region Update
+        
+        [Fact]
+        public void Update_ReturnsUpdatedDeck()
+        {
+            var deck = new Deck()
+            {
+                Name = "one",
+               Description = "oneone",
+               isPublic = true,
+               User = new User{Id = 1}
+            };
+            var expected = new Deck
+            {
+                Id =1,
+                Name = "one",
+                Description = "oneone",
+                isPublic = true,
+                User = new User{Id = 1}
+            };
+            _mock.Setup(repo => repo.Update(deck))
+                .Returns(expected);
+            
+            Assert.Equal(expected, _service.Update(deck));
+        }
+
+        [Fact]
+        public void Update_DeckIdLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck{Id=-1}));
+            Assert.Equal("deckId cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void Update_DeckEmptyName_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck{Id=1, Name = ""}));
+            Assert.Equal("name cannot be empty", ex.Message);
+        }
+        
+        [Fact]
+        public void Update_DescriptionTooLong_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck{Id=1, Name = "aa", 
+                Description = "hVXPcIwTa3A9Velwu3YlXNQWthSOCl50bGUby4R0SJuCzuvqa1voltzjwtg13koc8gI6nO3vDMGJMgVTzLfXHGQWLLal1cQbqsePThZwmlGXxzjFfBhR587lKRJ2lcIcn4NCysL3k1H3n7ldmocGVbyMdNvH318yhA5x7dfKlMb1PSmAfMW3zVFmm7UJOU1detmSpDpnN20thUeNvtwkVUfEQq0fFhKBVDmDTn9EaK2VksQcdIPGgnDdspj"}));
+            Assert.Equal("description cannot be longer than 250 characters", ex.Message);
+        }
+
+        #endregion
+        
+        
+        #region Delete
+        [Fact]
+        public void Delete_ParameterDeckId_ReturnDeck()
+        {
+            var deck = new Deck
+            {
+                Id = 1,
+                Name = "Maths",
+                Description = "summing the numbers",
+                isPublic = true,
+                User = new User {Id = 1},
+                Cards = new List<Card>()
+            };
+            
+            _mock.Setup(r => r.Delete(deck.Id))
+                .Returns(deck);
+            
+            var actual = _service.Delete(deck.Id);
+            
+            Assert.Equal(deck, actual);
+        }
+
+        [Fact]
+        public void Delete_ParameterDeckIdLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Delete(-1));
+            Assert.Equal("deckId cannot be less than 0", ex.Message);
+        }
+
+        [Fact]
+        public void DeleteDeck_WithParams_CallsDeckRepositoryOnce()
+        {
+
+            var deckId = 1;
+
+            _service.Delete(deckId);
+
+            _mock.Verify(r => r.Delete(deckId), Times.Once);
+        }
         #endregion
         
     }

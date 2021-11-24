@@ -29,34 +29,68 @@ namespace Flashcards.WebApi.Controllers
         public ActionResult<List<GetDeckDto>> GetAllPublic()
         {
             return Ok(_service.GetAllPublic()
-                .Select(d => new GetDeckDto
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    isPublic = d.isPublic,
-                    UserId = d.User.Id,
-                    NumberOfCards = d.Cards.Count
-                }));
-        }
+                    .Select(d => new GetDeckDto
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        Description = d.Description,
+                        isPublic = d.isPublic,
+                        UserId = d.User.Id,
+                        NumberOfCards = d.Cards.Count
+                    }));
+            }
         
         [HttpGet("GetByUserId/{userId}")]
         public ActionResult<List<GetDeckDto>> GetAllByUserId(int userId)
         {
-            if (userId < 0) return BadRequest("userId cannot be less than 0");
-            return Ok(_service.GetByUserId(userId)
-                .Select(d => new GetDeckDto
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    isPublic = d.isPublic,
-                    UserId = d.User.Id,
-                    NumberOfCards = d.Cards.Count
-                }));
-        }
+            try
+            {
 
-       // [AllowAnonymous]
+                return Ok(_service.GetByUserId(userId)
+                    .Select(d => new GetDeckDto
+                    {
+                        Id = d.Id,
+                        Name = d.Name,
+                        Description = d.Description,
+                        isPublic = d.isPublic,
+                        UserId = d.User.Id,
+                        NumberOfCards = d.Cards.Count
+                    }));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpGet("GetById/{deckId}")]
+        public ActionResult<GetDeckWithCardsDto> GetById(int deckId)
+        {
+            try
+            {
+                var deck = _service.GetById(deckId);
+                return Ok(new GetDeckWithCardsDto
+                {
+                    Id = deck.Id,
+                    Name = deck.Name,
+                    Description = deck.Description,
+                    IsPublic = deck.isPublic,
+                    UserId = deck.User.Id,
+                    Cards = deck.Cards.Select(c => new CardInDeckDto
+                    {
+                        Id = c.Id,
+                        Question = c.Question,
+                        Answer = c.Answer,
+                        Correctness = c.Correctness
+                    }).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
         [HttpPost]
         public ActionResult<Deck> Post([FromBody] PostDeckDto postDeckDto)
         {
@@ -85,53 +119,37 @@ namespace Flashcards.WebApi.Controllers
             
         }
 
-
-        [HttpGet("GetById/{deckId}")]
-        public ActionResult<GetDeckWithCardsDto> GetById(int deckId)
-        {
-            if (deckId < 0) return BadRequest("deckId cannot be less than 0");
-            var deck = _service.GetById(deckId);
-            return Ok(new GetDeckWithCardsDto
-            {
-                Id = deck.Id,
-                Name = deck.Name,
-                Description = deck.Description,
-                IsPublic = deck.isPublic,
-                UserId = deck.User.Id,
-                Cards = deck.Cards.Select(c=>new CardInDeckDto
-                {
-                    Id = c.Id,
-                    Question = c.Question,
-                    Answer = c.Answer,
-                    Correctness = c.Correctness
-                }).ToList()
-            });
-        }
-        
-        
-
         [HttpDelete("{deckId}")]
         public ActionResult<Deck> Delete(int deckId)
         {
-            if (deckId < 0) return BadRequest("deckId cannot be less than 0");
-            return Ok(_service.Delete(deckId));
+            try
+            {
+                return Ok(_service.Delete(deckId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         
         [HttpPut]
         public ActionResult<Deck> Update([FromBody] PutDeckDto deck)
         {
             if (deck == null) throw new InvalidDataException("deck to update cannot be null");
-            if (deck.Id < 0) return BadRequest("deckId cannot be less than 0");
-            if (deck.Name.Length==0) return BadRequest("name cannot be empty");
-            if (deck.Description.Length > 250) return BadRequest("description cannot be longer than 250 characters");
-
-            return Ok(_service.Update(new Deck
+            try
             {
-                Id = deck.Id,
-                Name = deck.Name,
-                Description = deck.Description,
-                isPublic = deck.isPublic
-            }));
+                return Ok(_service.Update(new Deck
+                {
+                    Id = deck.Id,
+                    Name = deck.Name,
+                    Description = deck.Description,
+                    isPublic = deck.isPublic
+                }));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
     

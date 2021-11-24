@@ -60,10 +60,10 @@ namespace Flashcards.Domain.Test.Services
         
         #region Delete
         [Fact]
-        public void ProductService_Delete_ParameterProduct_ReturnProduct()
+        public void CardService_Delete_CardProduct_ReturnCard()
         {
             // Arrange
-            var product = new Card
+            var card = new Card
             {
                 Id = 1,
                 Question = "Pig?",
@@ -71,16 +71,16 @@ namespace Flashcards.Domain.Test.Services
                 Correctness = 0
             };
             
-            _mock.Setup(r => r.Delete(product.Id))
-                .Returns(product);
+            _mock.Setup(r => r.Delete(card.Id))
+                .Returns(card);
             // Act
-            var actual = _service.Delete(product.Id);
+            var actual = _service.Delete(card.Id);
             // Assert
-            Assert.Equal(product,actual);
+            Assert.Equal(card,actual);
         }
         
         [Fact]
-        public void DeleteProduct_WithParams_CallsProductRepositoryOnce()
+        public void DeleteCard_WithParams_CallsCardRepositoryOnce()
         {
             
             var cardId = (int) 1;

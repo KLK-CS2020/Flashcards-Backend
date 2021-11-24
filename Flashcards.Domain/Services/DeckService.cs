@@ -27,11 +27,13 @@ namespace Flashcards.Domain.Services
 
         public List<Deck> GetByUserId(int userId)
         {
+            if (userId < 0) throw new InvalidDataException("userId cannot be less than 0");
             return _repo.GetByUserId(userId);
         }
 
         public Deck GetById(int deckId)
         {
+            if (deckId < 0) throw new InvalidDataException("deckId cannot be less than 0");
             return _repo.GetById(deckId);
         }
 
@@ -54,11 +56,15 @@ namespace Flashcards.Domain.Services
 
         public Deck Delete(int deckId)
         {
+            if (deckId < 0) throw new InvalidDataException("deckId cannot be less than 0");
             return _repo.Delete(deckId);
         }
 
         public Deck Update(Deck deck)
         {
+            if (deck.Id < 0) throw new InvalidDataException("deckId cannot be less than 0");
+            if (deck.Name.Length==0) throw new InvalidDataException("name cannot be empty");
+            if (deck.Description.Length > 250) throw new InvalidDataException("description cannot be longer than 250 characters");
             return _repo.Update(deck);
         }
     }
