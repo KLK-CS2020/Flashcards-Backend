@@ -1,6 +1,6 @@
 ﻿using Flashcards.Security.Models;
 
-namespace Flashcards.Security
+namespace Flashcards.Security.IServices
 {
     public interface ISecurityService
     {

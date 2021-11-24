@@ -1,4 +1,4 @@
-﻿namespace Flashcards.Security
+﻿namespace Flashcards.Security.Helpers
 {
     public class AuthenticationHelper: IAuthenticationHelper
     {

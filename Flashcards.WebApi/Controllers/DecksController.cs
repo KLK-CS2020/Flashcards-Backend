@@ -56,7 +56,7 @@ namespace Flashcards.WebApi.Controllers
                 }));
         }
 
-        [AllowAnonymous]
+       // [AllowAnonymous]
         [HttpPost]
         public ActionResult<Deck> Post([FromBody] PostDeckDto postDeckDto)
         {
@@ -66,7 +66,7 @@ namespace Flashcards.WebApi.Controllers
                 return BadRequest("Name cannot be empty");
             if (postDeckDto.Description is null or "")
                 return BadRequest("Description cannot be empty");
-            if (postDeckDto.Id ==0)
+            if (postDeckDto.UserId ==0)
                 return BadRequest("User ID must be specified");
             try
             {
@@ -75,7 +75,7 @@ namespace Flashcards.WebApi.Controllers
                     Name = postDeckDto.Name,
                    Description = postDeckDto.Description,
                    isPublic = postDeckDto.isPublic,
-                   User = new User{Id = postDeckDto.Id}
+                   User = new User{Id = postDeckDto.UserId}
                 }));
             }
             catch (Exception e)
