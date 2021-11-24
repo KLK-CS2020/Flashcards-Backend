@@ -10,7 +10,11 @@ using Flashcards.Domain.IRepositories;
 using Flashcards.Domain.Services;
 using Flashcards.Domain.IRepositories;
 using Flashcards.Security;
+using Flashcards.Security.Helpers;
+using Flashcards.Security.IServices;
+using Flashcards.Security.Models;
 using Flashcards.Security.Repositories;
+using Flashcards.Security.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -105,7 +109,7 @@ namespace Flashcards.WebApi
         }
 
 
-// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SecurityContext securityContext,
             MainDbContext context)

@@ -104,7 +104,15 @@ namespace Flashcards.DataAccess.Repositories
                 Description = deck.Description,
                 Name = deck.Name,
                 isPublic = deck.isPublic,
-                UserId = deck.User.Id
+                UserId = deck.User.Id,
+                UserEntity = new UserEntity
+                {
+                    Id = deck.User.Id,
+                    Email = deck.User.Email,
+                    PasswordHash = deck.User.PasswordHash,
+                    PasswordSalt = deck.User.PasswordSalt
+                },
+                Cards = new List<CardEntity>()
             };
             _ctx.Attach(newDeck).State = EntityState.Added;
             _ctx.SaveChanges();

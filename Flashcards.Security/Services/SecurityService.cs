@@ -3,12 +3,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using Flashcards.Domain.IRepositories;
+using Flashcards.Security.Helpers;
+using Flashcards.Security.IServices;
 using Flashcards.Security.Models;
 using Flashcards_backend.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Flashcards.Security
+namespace Flashcards.Security.Services
 {
     public class SecurityService: ISecurityService
     {
