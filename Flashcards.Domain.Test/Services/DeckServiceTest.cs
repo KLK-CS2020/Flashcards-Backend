@@ -269,35 +269,7 @@ namespace Flashcards.Domain.Test.Services
             var exception = Assert.Throws<InvalidDataException>(Actual);
             Assert.Equal("Name must be specified", exception.Message);
         }
-        
-        [Fact]
-        public void Create_DescriptionIsntSpecified_ThrowsInvalidDataException()
-        {
-            var invalidDeck = new Deck()
-            {
-                Name = "kuba",
-                isPublic = true,
-                User = new User{Id = 7}
-            };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User>() {new User {Id = 6}});
-            void Actual() => _service.Create(invalidDeck);
-            Assert.Throws<InvalidDataException>(Actual);
-        }
-        
-        [Fact]
-        public void Create_DescriptionIsntSpecified_ThrowsInvalidDataExceptionWithMessage()
-        {
-            var invalidDeck = new Deck()
-            {
-                Name = "kuba",
-                isPublic = true,
-                User = new User{Id = 7}
-            };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User>() {new User {Id = 6}});
-            void Actual() => _service.Create(invalidDeck);
-            var exception = Assert.Throws<InvalidDataException>(Actual);
-            Assert.Equal("Description must be specified", exception.Message);
-        }
+      
         
         [Fact]
         public void Create_WhenSuchUserDoesntExist_ThrowsInvalidDataException()

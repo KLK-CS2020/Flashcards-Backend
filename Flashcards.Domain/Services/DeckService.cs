@@ -43,10 +43,8 @@ namespace Flashcards.Domain.Services
                 throw new ArgumentNullException();
             if (deck.Id != 0)
                 throw new InvalidDataException("Id cannot be specified");
-            if(deck.Name==null)
+            if(deck.Name is null or "" )
                 throw new InvalidDataException("Name must be specified");
-            if(deck.Description==null)
-                throw new InvalidDataException("Description must be specified");
             var user = _userRepository.GetAll().FirstOrDefault(u => u.Id == deck.User.Id);
             if (user == null)
                 throw new InvalidDataException("specified user doesnt exist");

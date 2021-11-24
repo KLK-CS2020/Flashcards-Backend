@@ -96,12 +96,7 @@ namespace Flashcards.WebApi.Controllers
         {
             if (postDeckDto == null)
                 throw new InvalidDataException("deck cannot be null");
-            if (postDeckDto.Name is null or "")
-                return BadRequest("Name cannot be empty");
-            if (postDeckDto.Description is null or "")
-                return BadRequest("Description cannot be empty");
-            if (postDeckDto.UserId ==0)
-                return BadRequest("User ID must be specified");
+          
             try
             {
                 return Ok(_service.Create(new Deck()
