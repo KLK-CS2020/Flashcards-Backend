@@ -27,7 +27,7 @@ namespace Flashcards.Domain.Test.Services
 
         #region Create
         [Fact]
-        public void Create_ReturnsCreatedProductWithId()
+        public void Create_ReturnsCreatedCardId()
         {
             var passedCard = new Card
             {
@@ -60,7 +60,7 @@ namespace Flashcards.Domain.Test.Services
         
         #region Delete
         [Fact]
-        public void CardService_Delete_CardProduct_ReturnCard()
+        public void CardService_Delete_Card_ReturnCard()
         {
             // Arrange
             var card = new Card
@@ -96,7 +96,7 @@ namespace Flashcards.Domain.Test.Services
 
         #region GetAll
         [Fact]
-        public void GetAllProducts_CallsProductRepositoriesFindAll_ExactlyOnce()
+        public void GetAllCards_FindAll_ExactlyOnce()
         {
             int deckId = 1;
             
