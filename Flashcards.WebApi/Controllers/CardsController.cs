@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Flashcards.WebApi.Dtos.Card;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
@@ -23,7 +24,14 @@ namespace Flashcards.WebApi.Controllers
         [HttpGet]
         public ActionResult<List<CardInDeckDto>> GetAll([FromQuery] int deckId)
         {
-            return Ok(_cardService.GetAllCardsByDeckId(deckId));
+            return Ok(_cardService.GetAllCardsByDeckId(deckId)
+                .Select(c => new CardInDeckDto
+                {
+                    Id = c.Id,
+                    Question = c.Question,
+                    Answer = c.Answer,
+                    Correctness = c.Correctness
+                }));
         }
 
         [HttpDelete("{id}")]

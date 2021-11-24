@@ -25,12 +25,13 @@ namespace Flashcards.DataAccess.Repositories
         public List<Card> ReadAllCardsByDeckId(int deckId)
         {
             
-            return _ctx.Cards.Select(ca => new Card
+            return _ctx.Cards.Where(c =>c.Deck.Id == deckId).Select(ca => new Card
                     {
                         Id = ca.Id,
                         Question = ca.Question,
-                        Answer = ca.Answer
-                    }).Where(c =>c.Deck.Id == deckId).ToList();
+                        Answer = ca.Answer,
+                        Correctness = ca.Correctness
+                    }).ToList();
         }
 
         public Card Create(Card newCard)
