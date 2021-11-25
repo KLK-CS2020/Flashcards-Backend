@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Flashcards.Core\Flashcards.Core.csproj" />
+        <ProjectReference Include="..\Flashcards.Core\Flashcards.Core.csproj"/>
     </ItemGroup>
 
 </Project>

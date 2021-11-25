@@ -12,13 +12,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Flashcards.Security.Services
 {
-    public class SecurityService: ISecurityService
+    public class SecurityService : ISecurityService
     {
-        private readonly IUserRepository _repo;
         private readonly IAuthenticationHelper _authenticationHelper;
+        private readonly IUserRepository _repo;
 
-        public SecurityService(IConfiguration configuration, 
-            IUserRepository repository,  IAuthenticationHelper authenticationHelper)
+        public SecurityService(IConfiguration configuration,
+            IUserRepository repository, IAuthenticationHelper authenticationHelper)
         {
             Configuration = configuration;
             _repo = repository;
@@ -30,13 +30,13 @@ namespace Flashcards.Security.Services
         public JwtToken GenerateJwtToken(string email, string password)
         {
             var user = _repo.GetAll().FirstOrDefault(user => user.Email.Equals(email));
-            if(user == null)
-                return new JwtToken()
+            if (user == null)
+                return new JwtToken
                 {
                     Message = "User or password not correct"
                 };
 
-            
+
             //Did we not find a user with the given username?
             if (_authenticationHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)
             )
@@ -50,21 +50,18 @@ namespace Flashcards.Security.Services
                     expires: DateTime.Now.AddMinutes(120),
                     signingCredentials: credentials
                 );
-                return new JwtToken(
-                )
+                return new JwtToken
                 {
                     Jwt = new JwtSecurityTokenHandler().WriteToken(token),
                     Message = "ok"
                 };
             }
+
             //dont need else
-            return new JwtToken()
+            return new JwtToken
             {
                 Message = "User or password not correct"
             };
-
-
-
         }
 
         public bool Create(string loginDtoEmail, string loginDtoPassword)
@@ -77,7 +74,6 @@ namespace Flashcards.Security.Services
                 PasswordHash = hash,
                 PasswordSalt = salt
             });
-
         }
 
         public bool EmailExists(string email)

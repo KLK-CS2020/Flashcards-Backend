@@ -14,7 +14,7 @@ namespace Flashcards.Core.Test.IServices
             var service = new Mock<IDeckService>().Object;
             Assert.NotNull(service);
         }
-        
+
         [Fact]
         public void GetPublicDecks_WithNoParam_ReturnsListOfAllDecks()
         {
@@ -25,6 +25,5 @@ namespace Flashcards.Core.Test.IServices
             var service = mock.Object;
             Assert.Equal(fakeList, service.GetAllPublic());
         }
-        
     }
 }

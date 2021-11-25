@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Flashcards_backend.Core.Models;
 using Flashcards.DataAccess.Entities;
 using Flashcards.Domain.IRepositories;
-using Flashcards.Domain.Services;
+using Flashcards_backend.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Flashcards.DataAccess.Repositories
@@ -12,17 +11,19 @@ namespace Flashcards.DataAccess.Repositories
     public class DeckRepository : IDeckRepository
     {
         private readonly MainDbContext _ctx;
+
         public DeckRepository(MainDbContext ctx)
         {
             if (ctx == null)
                 throw new InvalidDataException("Repository must have a dbContext");
             _ctx = ctx;
         }
+
         public List<Deck> GetAllPublic()
         {
             return _ctx.Decks
-                .Include(d=>d.UserEntity)
-                .Include(d=>d.Cards)
+                .Include(d => d.UserEntity)
+                .Include(d => d.Cards)
                 .Where(d => d.isPublic == true)
                 .Select(de => new Deck
                 {
@@ -35,7 +36,7 @@ namespace Flashcards.DataAccess.Repositories
                         Id = de.UserEntity.Id,
                         Email = de.UserEntity.Email
                     },
-                    Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList()
+                    Cards = de.Cards.Select(c => new Card {Id = c.Id}).ToList()
                 })
                 .ToList();
         }
@@ -43,8 +44,8 @@ namespace Flashcards.DataAccess.Repositories
         public List<Deck> GetByUserId(int userId)
         {
             return _ctx.Decks
-                .Include(d=>d.UserEntity)
-                .Include(d=>d.Cards)
+                .Include(d => d.UserEntity)
+                .Include(d => d.Cards)
                 .Where(d => d.UserEntity.Id == userId)
                 .Select(de => new Deck
                 {
@@ -57,7 +58,7 @@ namespace Flashcards.DataAccess.Repositories
                         Id = de.UserEntity.Id,
                         Email = de.UserEntity.Email
                     },
-                    Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList()
+                    Cards = de.Cards.Select(c => new Card {Id = c.Id}).ToList()
                 })
                 .ToList();
         }
@@ -66,34 +67,36 @@ namespace Flashcards.DataAccess.Repositories
         {
             var cards = _ctx.Cards
                 .Where(ce => ce.DeckId == deckId)
-                .Select(ce=>new Card
+                .Select(ce => new Card
                 {
                     Id = ce.Id,
                     Question = ce.Question,
                     Answer = ce.Answer,
                     Correctness = ce.Correctness,
-                    Deck = new Deck{Id = deckId}
+                    Deck = new Deck {Id = deckId}
                 })
                 .ToList();
-            
+
             var entity = _ctx.Decks
-                .Include(d=>d.UserEntity)
+                .Include(d => d.UserEntity)
                 .FirstOrDefault(de => de.Id == deckId);
-            
-            
-            return entity==null ? null : new Deck
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                Description = entity.Description,
-                isPublic = entity.isPublic,
-                User = new User
+
+
+            return entity == null
+                ? null
+                : new Deck
                 {
-                    Id = entity.UserEntity.Id,
-                    Email = entity.UserEntity.Email
-                },
-                Cards = cards
-            };
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    Description = entity.Description,
+                    isPublic = entity.isPublic,
+                    User = new User
+                    {
+                        Id = entity.UserEntity.Id,
+                        Email = entity.UserEntity.Email
+                    },
+                    Cards = cards
+                };
         }
 
         public Deck Create(Deck deck)
@@ -122,12 +125,12 @@ namespace Flashcards.DataAccess.Repositories
         public Deck Delete(int deckId)
         {
             var deckToDelete = _ctx.Decks
-                .Include(de=>de.Cards)
-                .Include(de=>de.UserEntity)
+                .Include(de => de.Cards)
+                .Include(de => de.UserEntity)
                 .FirstOrDefault(d => d.Id == deckId);
             _ctx.Decks.Remove(deckToDelete);
             _ctx.SaveChanges();
-            
+
             return new Deck
             {
                 Id = deckToDelete.Id,
@@ -138,7 +141,7 @@ namespace Flashcards.DataAccess.Repositories
                 {
                     Id = deckToDelete.UserEntity.Id,
                     Email = deckToDelete.UserEntity.Email
-                },
+                }
             };
         }
 

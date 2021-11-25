@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Flashcards.Domain.IRepositories;
+﻿using Flashcards.Domain.IRepositories;
 using Flashcards.Domain.Services;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
@@ -18,7 +17,7 @@ namespace Flashcards.Domain.Test.Services
             _mock = new Mock<ICardRepository>();
             _service = new CardService(_mock.Object);
         }
-        
+
         [Fact]
         public void CardService_IsICardService()
         {
@@ -26,6 +25,7 @@ namespace Flashcards.Domain.Test.Services
         }
 
         #region Create
+
         [Fact]
         public void Create_ReturnsCreatedCardId()
         {
@@ -38,27 +38,40 @@ namespace Flashcards.Domain.Test.Services
                 {
                     Id = 1
                 }
-
             };
             var expected = new Card
             {
-               Id = 1,
-               Question = "Pig?",
-               Answer = "No!!!",
-               Correctness = 0,
-               Deck = new Deck
-               {
-                   Id = 1
-               }
+                Id = 1,
+                Question = "Pig?",
+                Answer = "No!!!",
+                Correctness = 0,
+                Deck = new Deck
+                {
+                    Id = 1
+                }
             };
             _mock.Setup(r => r.Create(passedCard)).Returns(expected);
             var actualCard = _service.Create(passedCard);
             Assert.Equal(expected, actualCard);
         }
-        
+
         #endregion
-        
+
+        #region GetAll
+
+        [Fact]
+        public void GetAllCards_FindAll_ExactlyOnce()
+        {
+            var deckId = 1;
+
+            _service.GetAllCardsByDeckId(deckId);
+            _mock.Verify(r => r.ReadAllCardsByDeckId(deckId), Times.Once);
+        }
+
+        #endregion
+
         #region Delete
+
         [Fact]
         public void CardService_Delete_Card_ReturnCard()
         {
@@ -70,40 +83,26 @@ namespace Flashcards.Domain.Test.Services
                 Answer = "No!!!",
                 Correctness = 0
             };
-            
+
             _mock.Setup(r => r.Delete(card.Id))
                 .Returns(card);
             // Act
             var actual = _service.Delete(card.Id);
             // Assert
-            Assert.Equal(card,actual);
+            Assert.Equal(card, actual);
         }
-        
+
         [Fact]
         public void DeleteCard_WithParams_CallsCardRepositoryOnce()
         {
-            
-            var cardId = (int) 1;
-            
+            var cardId = 1;
+
             //Act
             _service.Delete(cardId);
-            
+
             //Assert
             _mock.Verify(r => r.Delete(cardId), Times.Once);
         }
-
-        #endregion
-
-        #region GetAll
-        [Fact]
-        public void GetAllCards_FindAll_ExactlyOnce()
-        {
-            int deckId = 1;
-            
-            _service.GetAllCardsByDeckId(deckId);
-            _mock.Verify(r=>r.ReadAllCardsByDeckId(deckId), Times.Once);
-        }
-        
 
         #endregion
     }

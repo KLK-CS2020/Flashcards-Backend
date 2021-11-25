@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flashcards.Domain.IRepositories;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
-using Flashcards.Domain.IRepositories;
 
 namespace Flashcards.Domain.Services
 {
@@ -20,6 +20,7 @@ namespace Flashcards.Domain.Services
             _repo = repo;
             _userRepository = userRepository;
         }
+
         public List<Deck> GetAllPublic()
         {
             return _repo.GetAllPublic();
@@ -43,7 +44,7 @@ namespace Flashcards.Domain.Services
                 throw new ArgumentNullException();
             if (deck.Id != 0)
                 throw new InvalidDataException("Id cannot be specified");
-            if(deck.Name is null or "" )
+            if (deck.Name is null or "")
                 throw new InvalidDataException("Name must be specified");
             var user = _userRepository.GetAll().FirstOrDefault(u => u.Id == deck.User.Id);
             if (user == null)
@@ -61,8 +62,9 @@ namespace Flashcards.Domain.Services
         public Deck Update(Deck deck)
         {
             if (deck.Id < 0) throw new InvalidDataException("deckId cannot be less than 0");
-            if (deck.Name.Length==0) throw new InvalidDataException("name cannot be empty");
-            if (deck.Description.Length > 250) throw new InvalidDataException("description cannot be longer than 250 characters");
+            if (deck.Name.Length == 0) throw new InvalidDataException("name cannot be empty");
+            if (deck.Description.Length > 250)
+                throw new InvalidDataException("description cannot be longer than 250 characters");
             return _repo.Update(deck);
         }
     }

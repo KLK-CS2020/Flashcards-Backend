@@ -49,7 +49,7 @@ namespace Flashcards.WebApi.Controllers
                 return BadRequest("Question cannot be empty");
             if (dto.Answer is null or "")
                 return BadRequest("Answer cannot be empty");
-            
+
             return Ok(_cardService.Update(new Card
             {
                 Question = dto.Question,
@@ -66,7 +66,7 @@ namespace Flashcards.WebApi.Controllers
                 return BadRequest("Question cannot be empty");
             if (dto.Answer is null or "")
                 return BadRequest("Answer cannot be empty");
-            
+
             return Ok(_cardService.Create(new Card
             {
                 Id = dto.Id,
@@ -74,6 +74,5 @@ namespace Flashcards.WebApi.Controllers
                 Answer = dto.Answer
             }));
         }
-        
     }
 }

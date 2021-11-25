@@ -4,10 +4,9 @@ using Flashcards.Domain.IRepositories;
 using Flashcards.Security.Models;
 using Flashcards_backend.Core.Models;
 
-
 namespace Flashcards.Security.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly SecurityContext _context;
 
@@ -30,7 +29,7 @@ namespace Flashcards.Security.Repositories
 
         public bool Create(User user)
         {
-            var createdUser = _context.LoginUsers.Add(new LoginUser()
+            var createdUser = _context.LoginUsers.Add(new LoginUser
             {
                 Email = user.Email,
                 PasswordHash = user.PasswordHash,

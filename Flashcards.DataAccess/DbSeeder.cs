@@ -101,6 +101,5 @@ namespace Flashcards.DataAccess
 
             _ctx.SaveChanges();
         }
-
     }
 }

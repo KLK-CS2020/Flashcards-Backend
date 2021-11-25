@@ -1,6 +1,4 @@
-﻿using Flashcards_backend.Core.Models;
-
-namespace Flashcards.DataAccess.Entities
+﻿namespace Flashcards.DataAccess.Entities
 {
     public class CardEntity
     {

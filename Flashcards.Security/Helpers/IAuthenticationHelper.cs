@@ -3,7 +3,7 @@
     public interface IAuthenticationHelper
     {
         /// <summary>
-        /// Create a hash of the given password. Will return both hash and the salt used.
+        ///     Create a hash of the given password. Will return both hash and the salt used.
         /// </summary>
         /// <param name="password">The original password</param>
         /// <param name="passwordHash">The hash of the password</param>
@@ -11,7 +11,7 @@
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
 
         /// <summary>
-        /// Verifies if a given password matches a given hash using the given salt 
+        ///     Verifies if a given password matches a given hash using the given salt
         /// </summary>
         /// <param name="password">The original password</param>
         /// <param name="storedHash">The hash of the password + salt</param>

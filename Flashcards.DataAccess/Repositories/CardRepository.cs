@@ -8,30 +8,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Flashcards.DataAccess.Repositories
 {
-    public class CardRepository: ICardRepository
+    public class CardRepository : ICardRepository
     {
         private readonly MainDbContext _ctx;
 
         public CardRepository(MainDbContext ctx)
         {
-            if (ctx == null)
-            {
-                throw new InvalidOperationException("CardRepository must have dbContext");
-            }
+            if (ctx == null) throw new InvalidOperationException("CardRepository must have dbContext");
             _ctx = ctx;
         }
 
 
         public List<Card> ReadAllCardsByDeckId(int deckId)
         {
-            
             return _ctx.Cards.Select(ca => new Card
-                    {
-                        Id = ca.Id,
-                        Question = ca.Question,
-                        Answer = ca.Answer,
-                        Correctness = ca.Correctness
-                    }).Where(c =>c.Deck.Id == deckId).ToList();
+            {
+                Id = ca.Id,
+                Question = ca.Question,
+                Answer = ca.Answer,
+                Correctness = ca.Correctness
+            }).Where(c => c.Deck.Id == deckId).ToList();
         }
 
         public Card Create(Card newCard)
@@ -41,7 +37,7 @@ namespace Flashcards.DataAccess.Repositories
                 Id = newCard.Id,
                 Question = newCard.Question,
                 Answer = newCard.Answer,
-                Correctness = newCard.Correctness,
+                Correctness = newCard.Correctness
                 //Deck = newCard.Deck
             }).State = EntityState.Added;
             _ctx.SaveChanges();
@@ -50,33 +46,33 @@ namespace Flashcards.DataAccess.Repositories
 
         public Card Delete(int cardId)
         {
-            var cardToDelete =_ctx.Cards.Select(ca => new Card
+            var cardToDelete = _ctx.Cards.Select(ca => new Card
             {
                 Id = ca.Id,
                 Question = ca.Question,
                 Answer = ca.Answer,
                 Correctness = ca.Correctness
-            }).FirstOrDefault(c =>c.Id == cardId);
-            _ctx.Cards.Remove(new CardEntity(){Id = cardId});
+            }).FirstOrDefault(c => c.Id == cardId);
+            _ctx.Cards.Remove(new CardEntity {Id = cardId});
             _ctx.SaveChanges();
             return cardToDelete;
         }
 
         public Card Update(Card card)
         {
-            CardEntity ce = new CardEntity()
+            var ce = new CardEntity
             {
                 Id = card.Id,
                 Question = card.Question,
                 Answer = card.Answer,
                 Correctness = card.Correctness
             };
-            
-            var updatedE= _ctx.Update(ce).Entity;
+
+            var updatedE = _ctx.Update(ce).Entity;
 
             _ctx.SaveChanges();
 
-            return new Card()
+            return new Card
             {
                 Id = updatedE.Id,
                 Question = updatedE.Question,

@@ -7,22 +7,19 @@ using Flashcards_backend.Core.Models;
 
 namespace Flashcards.Domain.Services
 {
-    public class CardService: ICardService
+    public class CardService : ICardService
     {
         private readonly ICardRepository _repo;
 
         public CardService(ICardRepository repository)
         {
-            if (repository == null)
-            {
-                throw new InvalidOperationException("Card repo cant be null");
-            }
+            if (repository == null) throw new InvalidOperationException("Card repo cant be null");
             _repo = repository;
         }
-        
+
         public List<Card> GetAllCardsByDeckId(int deckId)
         {
-           return _repo.ReadAllCardsByDeckId(deckId);
+            return _repo.ReadAllCardsByDeckId(deckId);
         }
 
         public Card Create(Card newCard)
@@ -31,9 +28,9 @@ namespace Flashcards.Domain.Services
                 throw new ArgumentNullException();
             if (newCard.Id != 0)
                 throw new InvalidDataException("I dont need id haha");
-            if(newCard.Question==null)
+            if (newCard.Question == null)
                 throw new InvalidDataException("Pls add a Question");
-            if(newCard.Answer==null)
+            if (newCard.Answer == null)
                 throw new InvalidDataException("Pls add a Answer");
             return _repo.Create(newCard);
         }

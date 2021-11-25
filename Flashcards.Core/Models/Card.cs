@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Flashcards_backend.Core.Models
 {
     public class Card
@@ -9,7 +7,5 @@ namespace Flashcards_backend.Core.Models
         public string Answer { get; set; }
         public double Correctness { get; set; }
         public Deck Deck { get; set; }
-
-       
     }
 }

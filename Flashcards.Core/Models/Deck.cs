@@ -10,6 +10,5 @@ namespace Flashcards_backend.Core.Models
         public User User { get; set; }
         public List<Card> Cards { get; set; }
         public bool isPublic { get; set; }
-
     }
 }

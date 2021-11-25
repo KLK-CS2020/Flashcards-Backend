@@ -7,9 +7,8 @@ namespace Flashcards.DataAccess
     {
         public MainDbContext(DbContextOptions<MainDbContext> options) : base(options)
         {
-            
         }
-        
+
         public virtual DbSet<DeckEntity> Decks { get; set; }
         public virtual DbSet<CardEntity> Cards { get; set; }
         public virtual DbSet<UserEntity> Users { get; set; }

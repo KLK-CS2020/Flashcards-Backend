@@ -11,6 +11,5 @@ namespace Flashcards.WebApi.Dtos.Deck
         public int UserId { get; set; }
         public bool IsPublic { get; set; }
         public List<CardInDeckDto> Cards { get; set; }
-        
     }
 }

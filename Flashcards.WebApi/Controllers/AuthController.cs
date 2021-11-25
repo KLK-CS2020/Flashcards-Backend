@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Flashcards.Security;
 using Flashcards.Security.IServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Flashcards.WebApi.Controllers
@@ -20,7 +14,7 @@ namespace Flashcards.WebApi.Controllers
         {
             _securityService = securityService;
         }
-       
+
 
         // POST: api/Login
         [AllowAnonymous] //people cant log in not being logged in
@@ -33,19 +27,17 @@ namespace Flashcards.WebApi.Controllers
                 Jwt = token.Jwt,
                 Message = token.Message
             };
-            
-        }
-        
-        [AllowAnonymous]
-        [HttpPost(nameof(Register))]
-        public ActionResult<Boolean> Register([FromBody] LoginDto loginDto)
-        {
-            var exists = _securityService.EmailExists(loginDto.Email);
-            if(exists)
-                 return BadRequest("Email already exists");
-            return _securityService.Create(loginDto.Email, loginDto.Password);
         }
 
+        [AllowAnonymous]
+        [HttpPost(nameof(Register))]
+        public ActionResult<bool> Register([FromBody] LoginDto loginDto)
+        {
+            var exists = _securityService.EmailExists(loginDto.Email);
+            if (exists)
+                return BadRequest("Email already exists");
+            return _securityService.Create(loginDto.Email, loginDto.Password);
+        }
     }
 
     public class TokenDto
