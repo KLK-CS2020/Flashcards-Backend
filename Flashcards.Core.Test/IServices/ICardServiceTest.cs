@@ -35,7 +35,10 @@ namespace Flashcards.Core.Test.IServices
         {
             var card = new Card
             {
-                Id = 1, Question = "Pig", Answer = "Malac", Correctness = 0
+                Id = 1,
+                Question = "Pig",
+                Answer = "Malac",
+                Correctness = 0
             };
             var serviceMoc = new Mock<ICardService>();
 

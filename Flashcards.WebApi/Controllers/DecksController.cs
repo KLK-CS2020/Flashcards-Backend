@@ -100,7 +100,7 @@ namespace Flashcards.WebApi.Controllers
                     Name = postDeckDto.Name,
                     Description = postDeckDto.Description,
                     isPublic = postDeckDto.isPublic,
-                    User = new User {Id = postDeckDto.UserId}
+                    User = new User { Id = postDeckDto.UserId }
                 }));
             }
             catch (Exception e)

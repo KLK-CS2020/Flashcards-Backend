@@ -36,7 +36,7 @@ namespace Flashcards.DataAccess.Repositories
                         Id = de.UserEntity.Id,
                         Email = de.UserEntity.Email
                     },
-                    Cards = de.Cards.Select(c => new Card {Id = c.Id}).ToList()
+                    Cards = de.Cards.Select(c => new Card { Id = c.Id }).ToList()
                 })
                 .ToList();
         }
@@ -58,7 +58,7 @@ namespace Flashcards.DataAccess.Repositories
                         Id = de.UserEntity.Id,
                         Email = de.UserEntity.Email
                     },
-                    Cards = de.Cards.Select(c => new Card {Id = c.Id}).ToList()
+                    Cards = de.Cards.Select(c => new Card { Id = c.Id }).ToList()
                 })
                 .ToList();
         }
@@ -73,7 +73,7 @@ namespace Flashcards.DataAccess.Repositories
                     Question = ce.Question,
                     Answer = ce.Answer,
                     Correctness = ce.Correctness,
-                    Deck = new Deck {Id = deckId}
+                    Deck = new Deck { Id = deckId }
                 })
                 .ToList();
 

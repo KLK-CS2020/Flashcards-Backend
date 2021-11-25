@@ -53,7 +53,7 @@ namespace Flashcards.DataAccess.Repositories
                 Answer = ca.Answer,
                 Correctness = ca.Correctness
             }).FirstOrDefault(c => c.Id == cardId);
-            _ctx.Cards.Remove(new CardEntity {Id = cardId});
+            _ctx.Cards.Remove(new CardEntity { Id = cardId });
             _ctx.SaveChanges();
             return cardToDelete;
         }

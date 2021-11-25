@@ -145,7 +145,7 @@ namespace Flashcards.Domain.Test.Services
         public void GetByDeckId_ParameterUserId_ReturnsDeck()
         {
             var deckId = 1;
-            var expected = new Deck {Id = 1};
+            var expected = new Deck { Id = 1 };
             _mock.Setup(r => r.GetById(deckId))
                 .Returns(expected);
 
@@ -183,7 +183,7 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 1}
+                User = new User { Id = 1 }
             };
             var expectedDeck = new Deck
             {
@@ -191,10 +191,10 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 1}
+                User = new User { Id = 1 }
             };
             _mock.Setup(repo => repo.Create(passedDeck)).Returns(expectedDeck);
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 1}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 1 } });
             var actualStudent = _service.Create(passedDeck);
             Assert.Equal(expectedDeck, actualStudent);
         }
@@ -221,9 +221,9 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -242,9 +242,9 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -262,9 +262,9 @@ namespace Flashcards.Domain.Test.Services
             {
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -281,9 +281,9 @@ namespace Flashcards.Domain.Test.Services
             {
                 Description = "aaaaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -303,9 +303,9 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -323,9 +323,9 @@ namespace Flashcards.Domain.Test.Services
                 Name = "kuba",
                 Description = "aaaaaaaaaaaa",
                 isPublic = true,
-                User = new User {Id = 7}
+                User = new User { Id = 7 }
             };
-            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> {new() {Id = 6}});
+            _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User> { new() { Id = 6 } });
 
             void Actual()
             {
@@ -348,7 +348,7 @@ namespace Flashcards.Domain.Test.Services
                 Name = "one",
                 Description = "oneone",
                 isPublic = true,
-                User = new User {Id = 1}
+                User = new User { Id = 1 }
             };
             var expected = new Deck
             {
@@ -356,7 +356,7 @@ namespace Flashcards.Domain.Test.Services
                 Name = "one",
                 Description = "oneone",
                 isPublic = true,
-                User = new User {Id = 1}
+                User = new User { Id = 1 }
             };
             _mock.Setup(repo => repo.Update(deck))
                 .Returns(expected);
@@ -367,14 +367,14 @@ namespace Flashcards.Domain.Test.Services
         [Fact]
         public void Update_DeckIdLessThan0_ThrowsException()
         {
-            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck {Id = -1}));
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck { Id = -1 }));
             Assert.Equal("deckId cannot be less than 0", ex.Message);
         }
 
         [Fact]
         public void Update_DeckEmptyName_ThrowsException()
         {
-            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck {Id = 1, Name = ""}));
+            var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck { Id = 1, Name = "" }));
             Assert.Equal("name cannot be empty", ex.Message);
         }
 
@@ -383,7 +383,8 @@ namespace Flashcards.Domain.Test.Services
         {
             var ex = Assert.Throws<InvalidDataException>(() => _service.Update(new Deck
             {
-                Id = 1, Name = "aa",
+                Id = 1,
+                Name = "aa",
                 Description =
                     "hVXPcIwTa3A9Velwu3YlXNQWthSOCl50bGUby4R0SJuCzuvqa1voltzjwtg13koc8gI6nO3vDMGJMgVTzLfXHGQWLLal1cQbqsePThZwmlGXxzjFfBhR587lKRJ2lcIcn4NCysL3k1H3n7ldmocGVbyMdNvH318yhA5x7dfKlMb1PSmAfMW3zVFmm7UJOU1detmSpDpnN20thUeNvtwkVUfEQq0fFhKBVDmDTn9EaK2VksQcdIPGgnDdspj"
             }));
@@ -404,7 +405,7 @@ namespace Flashcards.Domain.Test.Services
                 Name = "Maths",
                 Description = "summing the numbers",
                 isPublic = true,
-                User = new User {Id = 1},
+                User = new User { Id = 1 },
                 Cards = new List<Card>()
             };
 
