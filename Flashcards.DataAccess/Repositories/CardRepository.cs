@@ -36,14 +36,15 @@ namespace Flashcards.DataAccess.Repositories
 
         public Card Create(Card newCard)
         {
-            _ctx.Cards.Add(new CardEntity
+            var newEntity = new CardEntity
             {
-                Id = newCard.Id,
                 Question = newCard.Question,
                 Answer = newCard.Answer,
                 Correctness = newCard.Correctness,
-                //Deck = newCard.Deck
-            }).State = EntityState.Added;
+                DeckId = newCard.Deck.Id,
+                Deck = new DeckEntity{Id = newCard.Deck.Id}
+            };
+            _ctx.Cards.Attach(newEntity).State = EntityState.Added;
             _ctx.SaveChanges();
             return newCard;
         }
