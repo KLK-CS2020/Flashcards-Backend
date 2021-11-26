@@ -112,10 +112,11 @@ namespace Flashcards.Domain.Test.Services
         public void GetByUserId_ParameterUserId_ReturnListOfDecks()
         {
             var userId = 1;
-            _mock.Setup(r => r.GetByUserId(userId))
+            var search = "";
+            _mock.Setup(r => r.GetByUserId(userId, search))
                 .Returns(_expected);
             
-            var actual = _service.GetByUserId(userId);
+            var actual = _service.GetByUserId(userId, search);
             
             Assert.Equal(_expected, actual);
         }
@@ -123,7 +124,8 @@ namespace Flashcards.Domain.Test.Services
         [Fact]
         public void GetByUserId_ParameterLessThan0_ThrowsException()
         {
-            var ex = Assert.Throws<InvalidDataException>(() => _service.GetByUserId(-1));
+            var search = "";
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetByUserId(-1, search));
             Assert.Equal("userId cannot be less than 0", ex.Message);
         }
 
@@ -132,10 +134,11 @@ namespace Flashcards.Domain.Test.Services
         {
 
             var userId = 1;
+            var search = "";
 
-            _service.GetByUserId(userId);
+            _service.GetByUserId(userId, search);
 
-            _mock.Verify(r => r.GetByUserId(userId), Times.Once);
+            _mock.Verify(r => r.GetByUserId(userId, search), Times.Once);
         }
         
         #endregion

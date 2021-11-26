@@ -6,6 +6,7 @@ using Flashcards.DataAccess.Entities;
 using Flashcards.Domain.IRepositories;
 using Flashcards.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Flashcards.DataAccess.Repositories
 {
@@ -40,13 +41,21 @@ namespace Flashcards.DataAccess.Repositories
                 .ToList();
         }
 
-        public List<Deck> GetByUserId(int userId)
+        public List<Deck> GetByUserId(int userId, string search)
         {
-            return _ctx.Decks
-                .Include(d=>d.UserEntity)
-                .Include(d=>d.Cards)
-                .Where(d => d.UserEntity.Id == userId)
-                .Select(de => new Deck
+            var decks = _ctx.Decks
+                .Include(d => d.UserEntity)
+                .Include(d => d.Cards)
+                .Where(d => d.UserEntity.Id == userId);
+
+            if (search != null && search.Length > 0)
+            {
+                decks = decks
+                    .Where(d => d.Name.ToLower().Contains(search.ToLower()) ||
+                                d.Description.ToLower().Contains(search.ToLower()));
+            }
+
+            return decks.Select(de => new Deck
                 {
                     Id = de.Id,
                     Description = de.Description,
