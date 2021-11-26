@@ -106,6 +106,16 @@ namespace Flashcards.WebApi
             services.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 
             services.AddDbContext<SecurityContext>(options => { options.UseSqlite("Data Source = auth.db"); });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Dev-cors", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
 
@@ -121,6 +131,7 @@ namespace Flashcards.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
                 new SecurityMemoryInitializer().Initialize(securityContext);
+                app.UseCors("Dev-cors");
             }
 
             app.UseHttpsRedirection();
