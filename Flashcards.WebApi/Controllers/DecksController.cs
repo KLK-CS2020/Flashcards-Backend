@@ -41,12 +41,11 @@ namespace Flashcards.WebApi.Controllers
             }
         
         [HttpGet("GetByUserId/{userId}")]
-        public ActionResult<List<GetDeckDto>> GetAllByUserId(int userId)
+        public ActionResult<List<GetDeckDto>> GetAllByUserId(int userId, string search)
         {
             try
             {
-
-                return Ok(_service.GetByUserId(userId)
+                return Ok(_service.GetByUserId(userId, search)
                     .Select(d => new GetDeckDto
                     {
                         Id = d.Id,

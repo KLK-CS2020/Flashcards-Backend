@@ -25,10 +25,10 @@ namespace Flashcards.Domain.Services
             return _repo.GetAllPublic();
         }
 
-        public List<Deck> GetByUserId(int userId)
+        public List<Deck> GetByUserId(int userId, string search)
         {
             if (userId < 0) throw new InvalidDataException("userId cannot be less than 0");
-            return _repo.GetByUserId(userId);
+            return _repo.GetByUserId(userId, search);
         }
 
         public Deck GetById(int deckId)

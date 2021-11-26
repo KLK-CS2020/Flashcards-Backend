@@ -6,7 +6,7 @@ namespace Flashcards.Domain.IRepositories
     public interface IDeckRepository
     {
         List<Deck> GetAllPublic();
-        List<Deck> GetByUserId(int userId);
+        List<Deck> GetByUserId(int userId, string search);
         Deck GetById(int deckId);
         Deck Create(Deck deck);
         Deck Delete(int deckId);
