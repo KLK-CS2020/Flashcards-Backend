@@ -43,6 +43,14 @@ namespace Flashcards.Domain.Services
 
         public Card Update(Card card)
         {
+            if(card.Id<0)
+                throw new InvalidDataException("Id cannot be less than 0");
+            if(string.IsNullOrEmpty(card.Question))
+                throw new InvalidDataException("Question cannot be empty");
+            if(string.IsNullOrEmpty(card.Answer))
+                throw new InvalidDataException("Answer cannot be empty");
+            if(card.Correctness<0)
+                throw new InvalidDataException("Correctness cannot be less than 0");
             return _repo.Update(card);
         }
     }
