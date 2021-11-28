@@ -89,7 +89,7 @@ namespace Flashcards.DataAccess.Repositories
                 {
                     "correctness_desc" => cards.OrderByDescending(c => c.Correctness),
                     "correctness_asc" => cards.OrderBy(c => c.Correctness),
-                    "question_asc" => cards.OrderBy(c => c.Question),
+                    "question_asc" => cards.OrderBy(c => c.Question.ToLower()),
                     _ => cards
                 };
             }
