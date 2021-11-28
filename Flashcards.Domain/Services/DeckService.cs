@@ -31,10 +31,10 @@ namespace Flashcards.Domain.Services
             return _repo.GetByUserId(userId, search);
         }
 
-        public Deck GetById(int deckId)
+        public Deck GetById(int deckId, string sortOrder)
         {
             if (deckId < 0) throw new InvalidDataException("deckId cannot be less than 0");
-            return _repo.GetById(deckId);
+            return _repo.GetById(deckId, sortOrder);
         }
 
         public Deck Create(Deck deck)

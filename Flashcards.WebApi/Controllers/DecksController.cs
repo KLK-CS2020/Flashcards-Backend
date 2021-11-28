@@ -63,11 +63,11 @@ namespace Flashcards.WebApi.Controllers
         }
         
         [HttpGet("GetById/{deckId}")]
-        public ActionResult<GetDeckWithCardsDto> GetById(int deckId)
+        public ActionResult<GetDeckWithCardsDto> GetById(int deckId, string sortOrder)
         {
             try
             {
-                var deck = _service.GetById(deckId);
+                var deck = _service.GetById(deckId, sortOrder);
                 return Ok(new GetDeckWithCardsDto
                 {
                     Id = deck.Id,
