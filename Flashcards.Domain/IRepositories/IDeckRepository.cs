@@ -7,7 +7,7 @@ namespace Flashcards.Domain.IRepositories
     {
         List<Deck> GetAllPublic();
         List<Deck> GetByUserId(int userId, string search);
-        Deck GetById(int deckId);
+        Deck GetById(int deckId, string sortOrder);
         Deck Create(Deck deck);
         Deck Delete(int deckId);
         Deck Update(Deck deck);

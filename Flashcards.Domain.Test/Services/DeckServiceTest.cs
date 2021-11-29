@@ -149,11 +149,12 @@ namespace Flashcards.Domain.Test.Services
         public void GetByDeckId_ParameterUserId_ReturnsDeck()
         {
             var deckId = 1;
+            var sortOrder = "";
             var expected = new Deck {Id = 1};
-            _mock.Setup(r => r.GetById(deckId))
+            _mock.Setup(r => r.GetById(deckId, sortOrder))
                 .Returns(expected);
             
-            var actual = _service.GetById(deckId);
+            var actual = _service.GetById(deckId, sortOrder);
             
             Assert.Equal(expected, actual);
         }
@@ -161,7 +162,7 @@ namespace Flashcards.Domain.Test.Services
         [Fact]
         public void GetByDeckId_ParameterLessThan0_ThrowsException()
         {
-            var ex = Assert.Throws<InvalidDataException>(() => _service.GetById(-1));
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetById(-1, ""));
             Assert.Equal("deckId cannot be less than 0", ex.Message);
         }
 
@@ -170,10 +171,11 @@ namespace Flashcards.Domain.Test.Services
         {
 
             var deckId = 1;
+            var sortOrder = "";
 
-            _service.GetById(deckId);
+            _service.GetById(deckId, sortOrder);
 
-            _mock.Verify(r => r.GetById(deckId), Times.Once);
+            _mock.Verify(r => r.GetById(deckId, sortOrder), Times.Once);
         }
         
 

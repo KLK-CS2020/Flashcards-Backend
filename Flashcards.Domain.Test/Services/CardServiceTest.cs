@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Flashcards.Domain.IRepositories;
 using Flashcards.Domain.Services;
 using Flashcards_backend.Core.IServices;
@@ -56,6 +57,45 @@ namespace Flashcards.Domain.Test.Services
             Assert.Equal(expected, actualCard);
         }
         
+        [Fact]
+        public void Create_EmptyQuestion_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Question = "",
+                Answer = "answer",
+                Deck = new Deck {Id = 1}
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Create(card));
+            Assert.Equal("Question cannot be empty", ex.Message);
+        }
+        
+        [Fact]
+        public void Create_EmptyAnswer_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Question = "question",
+                Answer = "",
+                Deck = new Deck {Id = 1}
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Create(card));
+            Assert.Equal("Answer cannot be empty", ex.Message);
+        }
+        
+        [Fact]
+        public void Create_InvalidDeckId_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Question = "question",
+                Answer = "answer",
+                Deck = new Deck {Id = -1}
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Create(card));
+            Assert.Equal("Deck id cannot be less than 0", ex.Message);
+        }
+        
         #endregion
         
         #region Delete
@@ -104,6 +144,88 @@ namespace Flashcards.Domain.Test.Services
             _mock.Verify(r=>r.ReadAllCardsByDeckId(deckId), Times.Once);
         }
         
+
+        #endregion
+
+        #region Update
+        
+        [Fact]
+        public void Update_ReturnsUpdatedCard()
+        {
+            var passedCard = new Card
+            {
+                Id = 1,
+                Question = "Pig?",
+                Answer = "No!!!",
+                Correctness = 0
+            };
+            var expected = new Card
+            {
+                Id = 1,
+                Question = "Pig?",
+                Answer = "No!!!",
+                Correctness = 0
+            };
+            _mock.Setup(r => r.Update(passedCard)).Returns(expected);
+            var actualCard = _service.Update(passedCard);
+            Assert.Equal(expected, actualCard);
+        }
+
+        [Fact]
+        public void Update_EmptyQuestion_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Id = 1,
+                Question = "",
+                Answer = "answer",
+                Correctness = 100
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Update(card));
+            Assert.Equal("Question cannot be empty", ex.Message);
+        }
+        
+        [Fact]
+        public void Update_EmptyAnswer_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Id = 1,
+                Question = "question",
+                Answer = "",
+                Correctness = 100
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Update(card));
+            Assert.Equal("Answer cannot be empty", ex.Message);
+        }
+        
+        [Fact]
+        public void Update_CorrectnessLowerThanZero_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Id = 1,
+                Question = "question",
+                Answer = "answer",
+                Correctness = -1
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Update(card));
+            Assert.Equal("Correctness cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void Update_InvalidId_ThrowsInvalidDataException()
+        {
+            var card = new Card
+            {
+                Id = -1,
+                Question = "question",
+                Answer = "answer",
+                Correctness = 1
+            };
+            var ex = Assert.Throws<InvalidDataException>(()=>_service.Update(card));
+            Assert.Equal("Id cannot be less than 0", ex.Message);
+        }
 
         #endregion
     }

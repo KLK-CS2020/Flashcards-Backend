@@ -61,10 +61,60 @@ namespace Flashcards.DataAccess
                 UserEntity = user2,
                 Cards = new List<CardEntity>()
             };
+            var deck4 = new DeckEntity
+            {
+                Id = 4,
+                Name = "Biology",
+                Description = "animals and trees and bugs and people and humans and gems and bacteries and many other things and somethng else",
+                isPublic = false,
+                UserEntity = user1,
+                Cards = new List<CardEntity>()
+            };
+            var deck5 = new DeckEntity
+            {
+                Id = 5,
+                Name = "Maths",
+                Description = "subtracting the numbers",
+                isPublic = false,
+                UserEntity = user1,
+                Cards = new List<CardEntity>()
+            };
+            var deck6 = new DeckEntity
+            {
+                Id = 6,
+                Name = "Maths",
+                Description = "subtracting the numbers",
+                isPublic = false,
+                UserEntity = user1,
+                Cards = new List<CardEntity>()
+            };
+            var deck7 = new DeckEntity
+            {
+                Id = 7,
+                Name = "Maths",
+                Description = "subtracting the numbers",
+                isPublic = false,
+                UserEntity = user1,
+                Cards = new List<CardEntity>()
+            };
+            var deck8 = new DeckEntity
+            {
+                Id = 8,
+                Name = "Maths",
+                Description = "subtracting the numbers",
+                isPublic = false,
+                UserEntity = user1,
+                Cards = new List<CardEntity>()
+            };
 
             _ctx.Decks.Add(deck1);
             _ctx.Decks.Add(deck2);
             _ctx.Decks.Add(deck3);
+            _ctx.Decks.Add(deck4);
+            _ctx.Decks.Add(deck5);
+            _ctx.Decks.Add(deck6);
+            _ctx.Decks.Add(deck7);
+            _ctx.Decks.Add(deck8);
 
             _ctx.Cards.Add(new CardEntity
             {
@@ -97,6 +147,46 @@ namespace Flashcards.DataAccess
                 Answer = "0",
                 Correctness = 50,
                 Deck = deck3
+            });
+            _ctx.Cards.Add(new CardEntity
+            {
+                Id = 5,
+                Question = "Big cat",
+                Answer = "Lion",
+                Correctness = 82,
+                Deck = deck4
+            });
+            _ctx.Cards.Add(new CardEntity
+            {
+                Id = 6,
+                Question = "Scary dog",
+                Answer = "Wolf",
+                Correctness = 50,
+                Deck = deck4
+            });
+            _ctx.Cards.Add(new CardEntity
+            {
+                Id = 7,
+                Question = "In the middle of the face",
+                Answer = "Nose",
+                Correctness = 50,
+                Deck = deck4
+            });
+            _ctx.Cards.Add(new CardEntity
+            {
+                Id = 8,
+                Question = "Two of them on teh face",
+                Answer = "Eyes",
+                Correctness = 50,
+                Deck = deck4
+            });
+            _ctx.Cards.Add(new CardEntity
+            {
+                Id = 9,
+                Question = "Brain",
+                Answer = "brain",
+                Correctness = 70,
+                Deck = deck4
             });
 
             _ctx.SaveChanges();

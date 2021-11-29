@@ -65,25 +65,21 @@ namespace Flashcards.DataAccess.Repositories
 
         public Card Update(Card card)
         {
-            CardEntity ce = new CardEntity()
+            var entity = new CardEntity
             {
                 Id = card.Id,
                 Question = card.Question,
                 Answer = card.Answer,
                 Correctness = card.Correctness
             };
-            
-            var updatedE= _ctx.Update(ce).Entity;
+            _ctx.Attach(entity);
+            _ctx.Entry(entity).Property(e => e.Question).IsModified = true;
+            _ctx.Entry(entity).Property(e => e.Answer).IsModified = true;
+            _ctx.Entry(entity).Property(e => e.Correctness).IsModified = true;
 
             _ctx.SaveChanges();
-
-            return new Card()
-            {
-                Id = updatedE.Id,
-                Question = updatedE.Question,
-                Answer = updatedE.Answer,
-                Correctness = updatedE.Correctness
-            };
+            
+            return card;
         }
     }
 }

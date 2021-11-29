@@ -13,5 +13,12 @@ namespace Flashcards.DataAccess
         public virtual DbSet<DeckEntity> Decks { get; set; }
         public virtual DbSet<CardEntity> Cards { get; set; }
         public virtual DbSet<UserEntity> Users { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CardEntity>()
+                .HasOne(c => c.Deck)
+                .WithMany(d => d.Cards);
+        }
     }
 }

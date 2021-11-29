@@ -71,24 +71,32 @@ namespace Flashcards.DataAccess.Repositories
                 .ToList();
         }
 
-        public Deck GetById(int deckId)
+        public Deck GetById(int deckId, string sortOrder)
         {
             var cards = _ctx.Cards
-                .Where(ce => ce.DeckId == deckId)
-                .Select(ce=>new Card
+                .Where(c => c.Deck.Id == deckId)
+                .Select(ca => new Card
                 {
-                    Id = ce.Id,
-                    Question = ce.Question,
-                    Answer = ce.Answer,
-                    Correctness = ce.Correctness,
+                    Id = ca.Id,
+                    Question = ca.Question,
+                    Answer = ca.Answer,
+                    Correctness = ca.Correctness,
                     Deck = new Deck{Id = deckId}
-                })
-                .ToList();
-            
+                });
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                cards = sortOrder switch
+                {
+                    "correctness_desc" => cards.OrderByDescending(c => c.Correctness),
+                    "correctness_asc" => cards.OrderBy(c => c.Correctness),
+                    "question_asc" => cards.OrderBy(c => c.Question.ToLower()),
+                    _ => cards
+                };
+            }
+
             var entity = _ctx.Decks
                 .Include(d=>d.UserEntity)
                 .FirstOrDefault(de => de.Id == deckId);
-            
             
             return entity==null ? null : new Deck
             {
@@ -101,8 +109,9 @@ namespace Flashcards.DataAccess.Repositories
                     Id = entity.UserEntity.Id,
                     Email = entity.UserEntity.Email
                 },
-                Cards = cards
+                Cards = cards.ToList()
             };
+
         }
 
         public Deck Create(Deck deck)

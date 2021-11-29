@@ -49,38 +49,62 @@ namespace Flashcards.WebApi.Controllers
         }
 
         [HttpPut]
-        public ActionResult<Card> Update([FromBody] PostCardDto dto)
+        public ActionResult<CardInDeckDto> Update([FromBody] PutCardDto dto)
         {
             if (dto == null)
                 throw new InvalidDataException("Card cannot be null");
-            if (dto.Question is null or "")
-                return BadRequest("Question cannot be empty");
-            if (dto.Answer is null or "")
-                return BadRequest("Answer cannot be empty");
-            
-            return Ok(_cardService.Update(new Card
+
+            try
             {
-                Question = dto.Question,
-                Answer = dto.Answer
-            }));
+                var card = _cardService.Update(new Card
+                {
+                    Id = dto.Id,
+                    Question = dto.Question,
+                    Answer = dto.Answer,
+                    Correctness = dto.Correctness
+                });
+
+                return Ok(new CardInDeckDto
+                {
+                    Id = card.Id,
+                    Question = card.Question,
+                    Answer = card.Answer,
+                    Correctness = card.Correctness
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
-        public ActionResult<PostCardDto> Create([FromBody] PostCardDto dto)
+        public ActionResult<CardInDeckDto> Create([FromBody] PostCardDto dto)
         {
             if (dto == null)
                 throw new InvalidDataException("Card cannot be null");
-            if (dto.Question is null or "")
-                return BadRequest("Question cannot be empty");
-            if (dto.Answer is null or "")
-                return BadRequest("Answer cannot be empty");
-            
-            return Ok(_cardService.Create(new Card
+
+            try
             {
-                Question = dto.Question,
-                Answer = dto.Answer,
-                Deck = new Deck{Id = dto.deckId}
-            }));
+                var newCard = _cardService.Create(new Card
+                {
+                    Question = dto.Question,
+                    Answer = dto.Answer,
+                    Deck = new Deck {Id = dto.deckId}
+                });
+
+                return Ok(new CardInDeckDto
+                {
+                    Id = newCard.Id,
+                    Question = newCard.Question,
+                    Answer = newCard.Answer,
+                    Correctness = 0
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         
     }

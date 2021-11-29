@@ -27,14 +27,12 @@ namespace Flashcards.Domain.Services
 
         public Card Create(Card newCard)
         {
-            if (newCard == null)
-                throw new ArgumentNullException();
-            if (newCard.Id != 0)
-                throw new InvalidDataException("I dont need id haha");
-            if(newCard.Question==null)
-                throw new InvalidDataException("Pls add a Question");
-            if(newCard.Answer==null)
-                throw new InvalidDataException("Pls add a Answer");
+            if(string.IsNullOrEmpty(newCard.Question))
+                throw new InvalidDataException("Question cannot be empty");
+            if(string.IsNullOrEmpty(newCard.Answer))
+                throw new InvalidDataException("Answer cannot be empty");
+            if(newCard.Deck.Id<0)
+                throw new InvalidDataException("Deck id cannot be less than 0");
             return _repo.Create(newCard);
         }
 
@@ -45,6 +43,14 @@ namespace Flashcards.Domain.Services
 
         public Card Update(Card card)
         {
+            if(card.Id<0)
+                throw new InvalidDataException("Id cannot be less than 0");
+            if(string.IsNullOrEmpty(card.Question))
+                throw new InvalidDataException("Question cannot be empty");
+            if(string.IsNullOrEmpty(card.Answer))
+                throw new InvalidDataException("Answer cannot be empty");
+            if(card.Correctness<0)
+                throw new InvalidDataException("Correctness cannot be less than 0");
             return _repo.Update(card);
         }
     }
