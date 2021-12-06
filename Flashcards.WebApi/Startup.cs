@@ -76,6 +76,8 @@ namespace Flashcards.WebApi
             services.AddScoped<IDeckRepository, DeckRepository>();
             services.AddScoped<ICardService, CardService>();
             services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IAttemptService, AttemptService>();
+            services.AddScoped<IAttemptRepository, AttemptRepository>();
 
             services.AddDbContext<MainDbContext>(options => { options.UseSqlite("Data Source=main.db"); });
 

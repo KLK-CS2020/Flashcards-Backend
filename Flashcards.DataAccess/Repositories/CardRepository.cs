@@ -81,5 +81,17 @@ namespace Flashcards.DataAccess.Repositories
             
             return card;
         }
+
+        public void UpdateCorrectness(int cardId, double correctness)
+        {
+            var card = _ctx.Cards
+                .FirstOrDefault(c => c.Id == cardId);
+            card.Correctness = correctness;
+            _ctx.Attach(card);
+            _ctx.Entry(card).Property(c => c.Correctness).IsModified = true;
+
+            _ctx.SaveChanges();
+            
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace Flashcards.Domain.Test.Services
         }
         
         [Fact]
-        public void ProductService_IsIProductService()
+        public void DeckService_IsIDeckService()
         {
             Assert.True(_service is IDeckService);
         }
