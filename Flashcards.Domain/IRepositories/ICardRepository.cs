@@ -9,5 +9,6 @@ namespace Flashcards.Domain.IRepositories
         Card Create(Card newCard);
         Card Delete(int cardId);
         Card Update(Card card);
+        void UpdateCorrectness(int attemptCardId, double correctness);
     }
 }
