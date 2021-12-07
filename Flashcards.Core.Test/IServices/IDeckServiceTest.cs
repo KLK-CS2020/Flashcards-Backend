@@ -16,14 +16,15 @@ namespace Flashcards.Core.Test.IServices
         }
         
         [Fact]
-        public void GetPublicDecks_WithNoParam_ReturnsListOfAllDecks()
+        public void GetPublicDecks_ReturnsListOfAllDecks()
         {
             var mock = new Mock<IDeckService>();
             var fakeList = new List<Deck>();
-            mock.Setup(s => s.GetAllPublic())
+            string search = "";
+            mock.Setup(s => s.GetAllPublic(search))
                 .Returns(fakeList);
             var service = mock.Object;
-            Assert.Equal(fakeList, service.GetAllPublic());
+            Assert.Equal(fakeList, service.GetAllPublic(search));
         }
         
     }

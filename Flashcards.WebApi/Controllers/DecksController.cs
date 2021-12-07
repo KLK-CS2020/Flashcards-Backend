@@ -26,9 +26,9 @@ namespace Flashcards.WebApi.Controllers
         }
         
         [HttpGet("GetAllPublic")]
-        public ActionResult<List<GetDeckDto>> GetAllPublic()
+        public ActionResult<List<GetDeckDto>> GetAllPublic(string search)
         {
-            return Ok(_service.GetAllPublic()
+            return Ok(_service.GetAllPublic(search)
                     .Select(d => new GetDeckDto
                     {
                         Id = d.Id,

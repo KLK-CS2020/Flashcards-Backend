@@ -5,7 +5,7 @@ namespace Flashcards_backend.Core.IServices
 {
     public interface IDeckService
     {
-        List<Deck> GetAllPublic();
+        List<Deck> GetAllPublic(string search);
         List<Deck> GetByUserId(int userId, string search);
         Deck GetById(int deckId, string sortOrder);
         Deck Create(Deck deck);

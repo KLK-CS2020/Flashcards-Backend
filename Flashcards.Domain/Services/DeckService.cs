@@ -20,9 +20,9 @@ namespace Flashcards.Domain.Services
             _repo = repo;
             _userRepository = userRepository;
         }
-        public List<Deck> GetAllPublic()
+        public List<Deck> GetAllPublic(string search)
         {
-            return _repo.GetAllPublic();
+            return _repo.GetAllPublic(search);
         }
 
         public List<Deck> GetByUserId(int userId, string search)

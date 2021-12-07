@@ -92,16 +92,18 @@ namespace Flashcards.Domain.Test.Services
         [Fact]
         public void GetPublicDecks_CallsDecksRepository_ExactlyOnce()
         {
-            _service.GetAllPublic();
-            _mock.Verify(r => r.GetAllPublic(), Times.Once);
+            string search = "";
+            _service.GetAllPublic(search);
+            _mock.Verify(r => r.GetAllPublic(search), Times.Once);
         }
         
         [Fact]
         public void GetPublicDecks_NoFilter_ReturnsListOfAllPublicDecks()
         {
-            _mock.Setup(r => r.GetAllPublic())
+            string search = "";
+            _mock.Setup(r => r.GetAllPublic(search))
                 .Returns(_expected);
-            var actual = _service.GetAllPublic();
+            var actual = _service.GetAllPublic(search);
             Assert.Equal(_expected, actual);
         }
         #endregion

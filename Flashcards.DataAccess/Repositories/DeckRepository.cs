@@ -19,26 +19,14 @@ namespace Flashcards.DataAccess.Repositories
                 throw new InvalidDataException("Repository must have a dbContext");
             _ctx = ctx;
         }
-        public List<Deck> GetAllPublic()
+        public List<Deck> GetAllPublic(string search)
         {
-            return _ctx.Decks
-                .Include(d=>d.UserEntity)
-                .Include(d=>d.Cards)
-                .Where(d => d.isPublic == true)
-                .Select(de => new Deck
-                {
-                    Id = de.Id,
-                    Description = de.Description,
-                    Name = de.Name,
-                    isPublic = de.isPublic,
-                    User = new User
-                    {
-                        Id = de.UserEntity.Id,
-                        Email = de.UserEntity.Email
-                    },
-                    Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList()
-                })
-                .ToList();
+            var decks = _ctx.Decks
+                .Include(d => d.UserEntity)
+                .Include(d => d.Cards)
+                .Where(d => d.isPublic == true);
+               
+            return Search(decks, search);   
         }
 
         public List<Deck> GetByUserId(int userId, string search)
@@ -48,6 +36,11 @@ namespace Flashcards.DataAccess.Repositories
                 .Include(d => d.Cards)
                 .Where(d => d.UserEntity.Id == userId);
 
+            return Search(decks, search);
+        }
+
+        private List<Deck> Search(IQueryable<DeckEntity> decks, string search)
+        {
             if (search != null && search.Length > 0)
             {
                 decks = decks
