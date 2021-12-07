@@ -402,6 +402,35 @@ namespace Flashcards.Domain.Test.Services
             _mock.Verify(r => r.Delete(deckId), Times.Once);
         }
         #endregion
+
+        #region CreateCopied
+
+        [Fact]
+        public void CreateCopied_DeckIdLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.CreateCopied(-1, 1));
+            Assert.Equal("deckId cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void CreateCopied_UserIdLessThan0_ThrowsException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _service.CreateCopied(1, -1));
+            Assert.Equal("userId cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void CreateCopied_UserIdSameAsOwner_ThrowsException()
+        {
+            var userId = 1;
+            var deckId = 1;
+            _mock.Setup(r => r.GetById(deckId, ""))
+                .Returns(new Deck {User = new User {Id = userId}});
+            var ex = Assert.Throws<InvalidDataException>(() => _service.CreateCopied(deckId, userId));
+            Assert.Equal("you cannot copy public deck for the owner of the deck", ex.Message);
+        }
+
+        #endregion
         
     }
 }

@@ -65,5 +65,27 @@ namespace Flashcards.Domain.Services
             if (deck.Description.Length > 250) throw new InvalidDataException("description cannot be longer than 250 characters");
             return _repo.Update(deck);
         }
+
+        public Deck CreateCopied(int deckId, int userId)
+        {
+            if (deckId < 0) throw new InvalidDataException("deckId cannot be less than 0");
+            if (userId < 0) throw new InvalidDataException("userId cannot be less than 0");
+            
+            var original = _repo.GetById(deckId, "");
+
+            if (original.User.Id == userId)
+                throw new InvalidDataException("you cannot copy public deck for the owner of the deck");
+            
+            var newDeck = new Deck
+            {
+                Name = original.Name,
+                Description = original.Description,
+                isPublic = false,
+                User = new User {Id = userId},
+                Cards = original.Cards
+            };
+            
+            return _repo.CreateCopied(newDeck);
+        }
     }
 }

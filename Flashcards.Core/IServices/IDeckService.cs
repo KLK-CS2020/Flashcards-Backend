@@ -12,5 +12,6 @@ namespace Flashcards_backend.Core.IServices
         Deck Delete(int deckId);
         Deck Update(Deck deck);
 
+        Deck CreateCopied(int deckId, int userId);
     }
 }

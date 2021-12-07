@@ -74,6 +74,7 @@ namespace Flashcards.WebApi.Controllers
                     Name = deck.Name,
                     Description = deck.Description,
                     IsPublic = deck.isPublic,
+                    WasCopied = deck.WasCopied,
                     UserId = deck.User.Id,
                     Cards = deck.Cards.Select(c => new CardInDeckDto
                     {
@@ -111,6 +112,19 @@ namespace Flashcards.WebApi.Controllers
                 return BadRequest(e.Message);
             }
             
+        }
+
+        [HttpPost("CreateCopied")]
+        public ActionResult<Deck> CreateCopied([FromQuery] int deckId, int userId)
+        {
+            try
+            {
+                return Ok(_service.CreateCopied(deckId, userId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{deckId}")]

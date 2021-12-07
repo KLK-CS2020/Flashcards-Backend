@@ -11,5 +11,6 @@ namespace Flashcards.Domain.IRepositories
         Deck Create(Deck deck);
         Deck Delete(int deckId);
         Deck Update(Deck deck);
+        Deck CreateCopied(Deck newDeck);
     }
 }

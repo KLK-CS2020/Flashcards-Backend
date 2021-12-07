@@ -41,7 +41,8 @@ namespace Flashcards.DataAccess
                 Description = "summing the numbers",
                 isPublic = true,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck2 = new DeckEntity
             {
@@ -50,7 +51,8 @@ namespace Flashcards.DataAccess
                 Description = "synonyms",
                 isPublic = true,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck3 = new DeckEntity
             {
@@ -59,7 +61,8 @@ namespace Flashcards.DataAccess
                 Description = "subtracting the numbers",
                 isPublic = false,
                 UserEntity = user2,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck4 = new DeckEntity
             {
@@ -68,7 +71,8 @@ namespace Flashcards.DataAccess
                 Description = "animals and trees and bugs and people and humans and gems and bacteries and many other things and somethng else",
                 isPublic = false,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck5 = new DeckEntity
             {
@@ -77,7 +81,8 @@ namespace Flashcards.DataAccess
                 Description = "subtracting the numbers",
                 isPublic = false,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck6 = new DeckEntity
             {
@@ -86,7 +91,8 @@ namespace Flashcards.DataAccess
                 Description = "subtracting the numbers",
                 isPublic = false,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck7 = new DeckEntity
             {
@@ -95,7 +101,8 @@ namespace Flashcards.DataAccess
                 Description = "subtracting the numbers",
                 isPublic = false,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             var deck8 = new DeckEntity
             {
@@ -104,7 +111,8 @@ namespace Flashcards.DataAccess
                 Description = "subtracting the numbers",
                 isPublic = false,
                 UserEntity = user1,
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
 
             _ctx.Decks.Add(deck1);

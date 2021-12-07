@@ -24,7 +24,8 @@ namespace Flashcards.DataAccess.Repositories
             var decks = _ctx.Decks
                 .Include(d => d.UserEntity)
                 .Include(d => d.Cards)
-                .Where(d => d.isPublic == true);
+                .Where(d => d.isPublic == true &&
+                            d.WasCopied == false);
                
             return Search(decks, search);   
         }
@@ -59,7 +60,8 @@ namespace Flashcards.DataAccess.Repositories
                         Id = de.UserEntity.Id,
                         Email = de.UserEntity.Email
                     },
-                    Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList()
+                    Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList(),
+                    WasCopied = de.WasCopied
                 })
                 .ToList();
         }
@@ -102,7 +104,8 @@ namespace Flashcards.DataAccess.Repositories
                     Id = entity.UserEntity.Id,
                     Email = entity.UserEntity.Email
                 },
-                Cards = cards.ToList()
+                Cards = cards.ToList(),
+                WasCopied = entity.WasCopied
             };
 
         }
@@ -123,7 +126,8 @@ namespace Flashcards.DataAccess.Repositories
                     PasswordHash = deck.User.PasswordHash,
                     PasswordSalt = deck.User.PasswordSalt
                 },
-                Cards = new List<CardEntity>()
+                Cards = new List<CardEntity>(),
+                WasCopied = false
             };
             _ctx.Attach(newDeck).State = EntityState.Added;
             _ctx.SaveChanges();
@@ -150,6 +154,7 @@ namespace Flashcards.DataAccess.Repositories
                     Id = deckToDelete.UserEntity.Id,
                     Email = deckToDelete.UserEntity.Email
                 },
+                WasCopied = deckToDelete.WasCopied
             };
         }
 
@@ -165,6 +170,59 @@ namespace Flashcards.DataAccess.Repositories
             _ctx.SaveChanges();
 
             return deck;
+        }
+
+        public Deck CreateCopied(Deck deck)
+        {
+            var newDeck = new DeckEntity
+            {
+                Description = deck.Description,
+                Name = deck.Name,
+                isPublic = deck.isPublic,
+                UserId = deck.User.Id,
+                UserEntity = new UserEntity
+                {
+                    Id = deck.User.Id
+                },
+                Cards = new List<CardEntity>(),
+                WasCopied = true
+            };
+            
+            var entity = _ctx.Decks.Attach(newDeck);
+            entity.State = EntityState.Added;
+            _ctx.SaveChanges();
+
+            foreach (var card in deck.Cards)
+            {
+                _ctx.Cards.Attach(new CardEntity
+                {
+                    Question = card.Question,
+                    Answer = card.Answer,
+                    Correctness = card.Correctness,
+                    DeckId = entity.Entity.Id,
+                    Deck = entity.Entity
+                });
+            }
+
+            _ctx.SaveChanges();
+            
+            return new Deck
+            {
+                Id = entity.Entity.Id,
+                Name = entity.Entity.Name,
+                Description = entity.Entity.Description,
+                WasCopied = entity.Entity.WasCopied,
+                isPublic = entity.Entity.isPublic,
+                User = new User{Id=entity.Entity.UserId},
+                Cards = entity.Entity.Cards.Select(ce=>new Card
+                {
+                    Id = ce.Id,
+                    Question = ce.Question,
+                    Answer = ce.Answer,
+                    Correctness = ce.Correctness
+                    
+                }).ToList()
+            };
         }
     }
 }
