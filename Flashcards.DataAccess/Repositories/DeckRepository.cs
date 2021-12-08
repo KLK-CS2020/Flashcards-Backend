@@ -25,7 +25,8 @@ namespace Flashcards.DataAccess.Repositories
                 .Include(d => d.UserEntity)
                 .Include(d => d.Cards)
                 .Where(d => d.isPublic == true &&
-                            d.WasCopied == false);
+                            d.WasCopied == false &&
+                            d.Cards.Count>0);
                
             return Search(decks, search);   
         }
