@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Flashcards_backend.Core.Filtering;
 using Flashcards.WebApi.Dtos;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
@@ -26,9 +27,13 @@ namespace Flashcards.WebApi.Controllers
         }
         
         [HttpGet("GetAllPublic")]
-        public ActionResult<List<GetDeckDto>> GetAllPublic(string search)
+        public ActionResult<List<GetDeckDto>> GetAllPublic(string search, [FromQuery] Filter filter)
         {
-            return Ok(_service.GetAllPublic(search)
+            if (filter == null)
+                throw new InvalidDataException("filter cannot be null");
+            try
+            {
+                return Ok(_service.GetAllPublic(search, filter)
                     .Select(d => new GetDeckDto
                     {
                         Id = d.Id,
@@ -39,6 +44,12 @@ namespace Flashcards.WebApi.Controllers
                         NumberOfCards = d.Cards.Count
                     }));
             }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
+        }
         
         [HttpGet("GetByUserId/{userId}")]
         public ActionResult<List<GetDeckDto>> GetAllByUserId(int userId, string search)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
@@ -93,19 +94,47 @@ namespace Flashcards.Domain.Test.Services
         public void GetPublicDecks_CallsDecksRepository_ExactlyOnce()
         {
             string search = "";
-            _service.GetAllPublic(search);
-            _mock.Verify(r => r.GetAllPublic(search), Times.Once);
+            Filter filter = new Filter{CurrentPage = 1, ItemsPrPage = 1};
+            _service.GetAllPublic(search, filter);
+            _mock.Verify(r => r.GetAllPublic(search, filter), Times.Once);
         }
         
         [Fact]
-        public void GetPublicDecks_NoFilter_ReturnsListOfAllPublicDecks()
+        public void GetPublicDecks_ReturnsListOfAllPublicDecks()
         {
             string search = "";
-            _mock.Setup(r => r.GetAllPublic(search))
+            Filter filter = new Filter{CurrentPage = 1, ItemsPrPage = 1};
+            _mock.Setup(r => r.GetAllPublic(search, filter))
                 .Returns(_expected);
-            var actual = _service.GetAllPublic(search);
+            var actual = _service.GetAllPublic(search, filter);
             Assert.Equal(_expected, actual);
         }
+        
+        [Fact]
+        public void GetPublic_CurrentPageLessThan1_ThrowsException()
+        {
+            var filter = new Filter
+            {
+                CurrentPage = 0,
+                ItemsPrPage = 1
+            };
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetAllPublic("", filter));
+            Assert.Equal("current page must be at least 1", ex.Message);
+        }
+        
+        [Fact]
+        public void GetPublic_ItemsPerPageLessThan1_ThrowsException()
+        {
+            var filter = new Filter
+            {
+                CurrentPage = 1,
+                ItemsPrPage = 0
+            };
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetAllPublic("", filter));
+            Assert.Equal("there must be at least 1 item per page", ex.Message);
+        }
+        
+        
         #endregion
 
         #region GetByUserId

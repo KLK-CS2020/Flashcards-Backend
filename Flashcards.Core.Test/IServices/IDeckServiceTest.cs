@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Moq;
@@ -21,10 +22,11 @@ namespace Flashcards.Core.Test.IServices
             var mock = new Mock<IDeckService>();
             var fakeList = new List<Deck>();
             string search = "";
-            mock.Setup(s => s.GetAllPublic(search))
+            Filter filter = new Filter();
+            mock.Setup(s => s.GetAllPublic(search, filter))
                 .Returns(fakeList);
             var service = mock.Object;
-            Assert.Equal(fakeList, service.GetAllPublic(search));
+            Assert.Equal(fakeList, service.GetAllPublic(search, filter));
         }
         
     }

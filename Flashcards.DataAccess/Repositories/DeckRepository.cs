@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.Models;
 using Flashcards.DataAccess.Entities;
 using Flashcards.Domain.IRepositories;
@@ -19,7 +20,7 @@ namespace Flashcards.DataAccess.Repositories
                 throw new InvalidDataException("Repository must have a dbContext");
             _ctx = ctx;
         }
-        public List<Deck> GetAllPublic(string search)
+        public List<Deck> GetAllPublic(string search, Filter filter)
         {
             var decks = _ctx.Decks
                 .Include(d => d.UserEntity)
@@ -27,8 +28,11 @@ namespace Flashcards.DataAccess.Repositories
                 .Where(d => d.isPublic == true &&
                             d.WasCopied == false &&
                             d.Cards.Count>0);
-               
-            return Search(decks, search);   
+
+            return Search(decks, search)
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPrPage)
+                .Take(filter.ItemsPrPage)
+                .ToList();
         }
 
         public List<Deck> GetByUserId(int userId, string search)
@@ -38,10 +42,10 @@ namespace Flashcards.DataAccess.Repositories
                 .Include(d => d.Cards)
                 .Where(d => d.UserEntity.Id == userId);
 
-            return Search(decks, search);
+            return Search(decks, search).ToList();
         }
 
-        private List<Deck> Search(IQueryable<DeckEntity> decks, string search)
+        private IQueryable<Deck> Search(IQueryable<DeckEntity> decks, string search)
         {
             if (search != null && search.Length > 0)
             {
@@ -63,8 +67,7 @@ namespace Flashcards.DataAccess.Repositories
                     },
                     Cards = de.Cards.Select(c=>new Card{Id = c.Id}).ToList(),
                     WasCopied = de.WasCopied
-                })
-                .ToList();
+                });
         }
 
         public Deck GetById(int deckId, string sortOrder)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
@@ -20,9 +21,11 @@ namespace Flashcards.Domain.Services
             _repo = repo;
             _userRepository = userRepository;
         }
-        public List<Deck> GetAllPublic(string search)
+        public List<Deck> GetAllPublic(string search, Filter filter)
         {
-            return _repo.GetAllPublic(search);
+            if (filter.CurrentPage < 1) throw new InvalidDataException("current page must be at least 1");
+            if (filter.ItemsPrPage < 1) throw new InvalidDataException("there must be at least 1 item per page");
+            return _repo.GetAllPublic(search, filter);
         }
 
         public List<Deck> GetByUserId(int userId, string search)
