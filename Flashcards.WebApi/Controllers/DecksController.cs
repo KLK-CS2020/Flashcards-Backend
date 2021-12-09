@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Flashcards_backend.Core.Filtering;
 using Flashcards.WebApi.Dtos;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
@@ -26,9 +27,13 @@ namespace Flashcards.WebApi.Controllers
         }
         
         [HttpGet("GetAllPublic")]
-        public ActionResult<List<GetDeckDto>> GetAllPublic()
+        public ActionResult<List<GetDeckDto>> GetAllPublic(string search, [FromQuery] Filter filter)
         {
-            return Ok(_service.GetAllPublic()
+            if (filter == null)
+                throw new InvalidDataException("filter cannot be null");
+            try
+            {
+                return Ok(_service.GetAllPublic(search, filter)
                     .Select(d => new GetDeckDto
                     {
                         Id = d.Id,
@@ -39,6 +44,12 @@ namespace Flashcards.WebApi.Controllers
                         NumberOfCards = d.Cards.Count
                     }));
             }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
+        }
         
         [HttpGet("GetByUserId/{userId}")]
         public ActionResult<List<GetDeckDto>> GetAllByUserId(int userId, string search)
@@ -74,6 +85,7 @@ namespace Flashcards.WebApi.Controllers
                     Name = deck.Name,
                     Description = deck.Description,
                     IsPublic = deck.isPublic,
+                    WasCopied = deck.WasCopied,
                     UserId = deck.User.Id,
                     Cards = deck.Cards.Select(c => new CardInDeckDto
                     {
@@ -111,6 +123,19 @@ namespace Flashcards.WebApi.Controllers
                 return BadRequest(e.Message);
             }
             
+        }
+
+        [HttpPost("CreateCopied")]
+        public ActionResult<Deck> CreateCopied([FromQuery] int deckId, int userId)
+        {
+            try
+            {
+                return Ok(_service.CreateCopied(deckId, userId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{deckId}")]

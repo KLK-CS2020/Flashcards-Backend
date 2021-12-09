@@ -10,6 +10,7 @@ namespace Flashcards.DataAccess.Entities
         public int UserId { get; set; }
         public UserEntity UserEntity { get; set; }
         public bool isPublic { get; set; }
+        public bool WasCopied { get; set; }
         public List<CardEntity> Cards { get; set; }
     }
 }

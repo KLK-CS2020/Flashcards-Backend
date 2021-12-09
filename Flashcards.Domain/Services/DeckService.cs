@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
@@ -20,9 +21,11 @@ namespace Flashcards.Domain.Services
             _repo = repo;
             _userRepository = userRepository;
         }
-        public List<Deck> GetAllPublic()
+        public List<Deck> GetAllPublic(string search, Filter filter)
         {
-            return _repo.GetAllPublic();
+            if (filter.CurrentPage < 1) throw new InvalidDataException("current page must be at least 1");
+            if (filter.ItemsPrPage < 1) throw new InvalidDataException("there must be at least 1 item per page");
+            return _repo.GetAllPublic(search, filter);
         }
 
         public List<Deck> GetByUserId(int userId, string search)
@@ -64,6 +67,28 @@ namespace Flashcards.Domain.Services
             if (deck.Name.Length==0) throw new InvalidDataException("name cannot be empty");
             if (deck.Description.Length > 250) throw new InvalidDataException("description cannot be longer than 250 characters");
             return _repo.Update(deck);
+        }
+
+        public Deck CreateCopied(int deckId, int userId)
+        {
+            if (deckId < 0) throw new InvalidDataException("deckId cannot be less than 0");
+            if (userId < 0) throw new InvalidDataException("userId cannot be less than 0");
+            
+            var original = _repo.GetById(deckId, "");
+
+            if (original.User.Id == userId)
+                throw new InvalidDataException("you cannot copy public deck for the owner of the deck");
+            
+            var newDeck = new Deck
+            {
+                Name = original.Name,
+                Description = original.Description,
+                isPublic = false,
+                User = new User {Id = userId},
+                Cards = original.Cards
+            };
+            
+            return _repo.CreateCopied(newDeck);
         }
     }
 }
