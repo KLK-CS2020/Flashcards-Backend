@@ -84,6 +84,7 @@ namespace Flashcards.Domain.Services
                 Name = original.Name,
                 Description = original.Description,
                 isPublic = false,
+                WasCopied = true,
                 User = new User {Id = userId},
                 Cards = original.Cards
             };

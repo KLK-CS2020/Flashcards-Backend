@@ -189,7 +189,7 @@ namespace Flashcards.DataAccess.Repositories
                     Id = deck.User.Id
                 },
                 Cards = new List<CardEntity>(),
-                WasCopied = true
+                WasCopied = deck.WasCopied
             };
             
             var entity = _ctx.Decks.Attach(newDeck);
@@ -198,11 +198,11 @@ namespace Flashcards.DataAccess.Repositories
 
             foreach (var card in deck.Cards)
             {
-                _ctx.Cards.Attach(new CardEntity
+                _ctx.Cards.Add(new CardEntity
                 {
                     Question = card.Question,
                     Answer = card.Answer,
-                    Correctness = card.Correctness,
+                    Correctness = 0,
                     DeckId = entity.Entity.Id,
                     Deck = entity.Entity
                 });
