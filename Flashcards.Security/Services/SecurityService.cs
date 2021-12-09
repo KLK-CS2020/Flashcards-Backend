@@ -27,8 +27,10 @@ namespace Flashcards.Security.Services
 
         public IConfiguration Configuration { get; }
 
-        public JwtToken GenerateJwtToken(string email, string password)
+        
+        public JwtToken GenerateJwtToken(string email, string password, out int userId)
         {
+            userId = -1;
             var user = _repo.GetAll().FirstOrDefault(user => user.Email.Equals(email));
             if(user == null)
                 return new JwtToken()
@@ -50,6 +52,7 @@ namespace Flashcards.Security.Services
                     expires: DateTime.Now.AddMinutes(120),
                     signingCredentials: credentials
                 );
+                userId = user.Id;
                 return new JwtToken(
                 )
                 {
