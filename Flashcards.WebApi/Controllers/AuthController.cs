@@ -27,11 +27,13 @@ namespace Flashcards.WebApi.Controllers
         [HttpPost(nameof(Login))]
         public ActionResult<TokenDto> Login([FromBody] LoginDto loginDto)
         {
-            var token = _securityService.GenerateJwtToken(loginDto.Email, loginDto.Password);
+            int userId; 
+            var token = _securityService.GenerateJwtToken(loginDto.Email, loginDto.Password, out userId);
             return new TokenDto
             {
                 Jwt = token.Jwt,
-                Message = token.Message
+                Message = token.Message,
+                UserId = userId,
             };
             
         }
@@ -52,6 +54,7 @@ namespace Flashcards.WebApi.Controllers
     {
         public string Jwt { get; set; }
         public string Message { get; set; }
+        public int UserId { get; set; }
     }
 
     public class LoginDto
