@@ -116,7 +116,16 @@ namespace Flashcards.WebApi
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
+                
+                options.AddPolicy("Prod-cors", policy =>
+                {
+                    policy.WithOrigins("https://memorise-klk.firebaseapp.com")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
+            
+            
         }
 
 
@@ -138,6 +147,7 @@ namespace Flashcards.WebApi
             if (env.IsProduction())
             {
                 new DbSeeder(context).SeedProduction();
+                app.UseCors("Prod-cors");
             }
 
             app.UseHttpsRedirection();
