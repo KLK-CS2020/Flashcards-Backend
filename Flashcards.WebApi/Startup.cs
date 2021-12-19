@@ -160,6 +160,12 @@ namespace Flashcards.WebApi
                 app.UseCors("AllowRemote");
                 app.UseCors("production-cors");
             }
+            
+            new DbSeeder(context).SeedDevelopment();
+            new SecurityMemoryInitializer().Initialize(securityContext);
+            app.UseCors("AllowRemote");
+            app.UseCors("production-cors");
+            
             app.UseRouting();
 
             app.UseAuthorization();
