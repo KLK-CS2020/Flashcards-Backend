@@ -108,7 +108,7 @@ namespace Flashcards.WebApi
 
             services.AddDbContext<SecurityContext>(options => { options.UseSqlite("Data Source = auth.db"); });
 
-            /*services.AddCors(options =>
+            services.AddCors(options =>
             {
                 options.AddPolicy("Dev-cors", policy =>
                 {
@@ -127,7 +127,7 @@ namespace Flashcards.WebApi
                 
                 
                 
-            });*/
+            });
 
             services.AddCors(options =>
             {
@@ -167,19 +167,11 @@ namespace Flashcards.WebApi
                 new SecurityMemoryInitializer().Initialize(securityContext);
             }
 
-            app.UseHttpsRedirection();
-
-            /*app.UseRouting();
-          //  app.UseCors("production-cors");
-            app.UseCors();
+          //  app.UseRouting();
+            app.UseCors("production-cors");
             app.UseAuthentication();
-            app.UseAuthorization();*/
-
-            app.UseCors();
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseMvc();
-           // app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
