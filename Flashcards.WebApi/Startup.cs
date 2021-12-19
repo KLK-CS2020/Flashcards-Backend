@@ -155,37 +155,14 @@ namespace Flashcards.WebApi
             }
             else
             {
-                app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
             }
-            
-            /*app.UseCors("AllowRemote");
-            app.UseCors("production-cors");*/
-            
-            
-           
-            
-            //app.UseRouting();
-            
-            //test
-            
-            //app.UseCors("production-cors");
-            /*app.UseCors(builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });*/
-            //app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors("production-cors");
             app.UseAuthentication();
             app.UseAuthorization();
 
