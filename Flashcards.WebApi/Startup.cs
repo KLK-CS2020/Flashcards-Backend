@@ -127,8 +127,14 @@ namespace Flashcards.WebApi
                 
                 
             });
-
-
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowRemote",
+                    builder => builder
+                        .WithOrigins("https://memorise-klk.firebaseapp.com",  "https://memorise-klk.web.app").AllowAnyHeader().AllowAnyMethod()
+                );
+            });
         }
 
 
@@ -146,13 +152,22 @@ namespace Flashcards.WebApi
                 
                 app.UseCors("Dev-cors");
             }
-           
+            else
+            {
+
+
                 app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
+              
+            }
             
-
-
+            app.UseCors("production-cors");
+            new DbSeeder(context).SeedDevelopment();
+            new SecurityMemoryInitializer().Initialize(securityContext);
+            
+            app.UseCors("production-cors");
+            app.UseCors("AllowRemote");
             app.UseHttpsRedirection();
 
             app.UseRouting();
