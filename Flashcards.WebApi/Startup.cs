@@ -119,7 +119,8 @@ namespace Flashcards.WebApi
                 
                 options.AddPolicy("Prod-cors", policy =>
                 {
-                    policy.WithOrigins("https://memorise-klk.firebaseapp.com")
+                    policy.WithOrigins("https://memorise-klk.firebaseapp.com",
+                            "https://memorise-klk.web.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
