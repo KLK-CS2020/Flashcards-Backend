@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.WebApi.Dtos.Attempt;
@@ -29,6 +30,19 @@ namespace Flashcards.WebApi.Controllers
             try
             {
                 return Ok(_service.Get(userId, cardId, quantity));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpGet("{userId}")]
+        public ActionResult<List<Activity>> GetActivities(int userId, [FromQuery] Filter filter)
+        {
+            try
+            {
+                return Ok(_service.GetForUser(userId, filter));
             }
             catch (Exception e)
             {

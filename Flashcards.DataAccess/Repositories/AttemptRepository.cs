@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +37,15 @@ namespace Flashcards.DataAccess.Repositories
             created.State = EntityState.Added;
             _ctx.SaveChanges();
             return created.Entity;
+        }
+
+        public List<Attempt> GetForUser(int userId)
+        {
+            return _ctx.Attempts
+                .Where(a => a.UserId == userId &&
+                            a.Date >= DateTime.Now.AddDays(-30))
+                .OrderBy(a => a.Date)
+                .ToList();
         }
     }
 }

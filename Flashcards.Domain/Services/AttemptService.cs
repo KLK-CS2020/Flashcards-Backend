@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
@@ -38,6 +40,40 @@ namespace Flashcards.Domain.Services
             UpdateCorrectness(a);
 
             return a;
+        }
+
+        public List<Activity> GetForUser(int userId, Filter filter)
+        {
+            if (userId < 0) throw new InvalidDataException("userId cannot be less than 0");
+            if (filter.CurrentPage < 1) throw new InvalidDataException("current page must be at least 1");
+            if (filter.ItemsPrPage < 1) throw new InvalidDataException("there must be at least 1 item per page");
+            var attempts = _repo.GetForUser(userId);
+            return countActivity(attempts)
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPrPage)
+                .Take(filter.ItemsPrPage)
+                .ToList();
+        }
+
+        private List<Activity> countActivity(List<Attempt> attempts)
+        {
+            List<Activity> activities = new List<Activity>();
+            
+            //creating activity for each day of the last 30 days
+            for (var i = 0; i < 30; i++)
+            {
+                var date = DateTime.Today.AddDays(i * -1);
+                var items = attempts.Where(a => a.Date.Date == date.Date).ToList();
+                var correct = items.Count(a => a.WasCorrect == true);
+                
+                activities.Add(new Activity
+                {
+                    Date = date,
+                    Day = date.DayOfWeek.ToString(),
+                    Average = items.Count>0? (double)correct/items.Count*100.0 : 0,
+                    CardsPractised = items.Count>0? items.Select(a=>a.CardId).Distinct().Count() : 0
+                });
+            }
+            return activities;
         }
 
         private void UpdateCorrectness(Attempt attempt)
