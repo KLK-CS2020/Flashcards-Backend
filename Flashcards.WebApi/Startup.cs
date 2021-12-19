@@ -117,10 +117,9 @@ namespace Flashcards.WebApi
                         .AllowAnyMethod();
                 });
                 
-                options.AddPolicy("Prod-cors", policy =>
+                options.AddPolicy("production-cors", policy =>
                 {
-                    policy.WithOrigins("https://memorise-klk.firebaseapp.com",
-                            "https://memorise-klk.web.app")
+                    policy.WithOrigins("https://memorise-klk.firebaseapp.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -145,13 +144,10 @@ namespace Flashcards.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
                 new SecurityMemoryInitializer().Initialize(securityContext);
                 app.UseCors("Dev-cors");
-            }
-
-            else
+            }else
             {
-                app.UseCors("Prod-cors");
+                app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
-                context.SaveChanges();
             }
 
             app.UseHttpsRedirection();
