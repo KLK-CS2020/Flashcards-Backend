@@ -135,6 +135,11 @@ namespace Flashcards.WebApi
                 app.UseCors("Dev-cors");
             }
 
+            if (env.IsProduction())
+            {
+                new DbSeeder(context).SeedProduction();
+            }
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

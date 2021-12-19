@@ -200,5 +200,9 @@ namespace Flashcards.DataAccess
             _ctx.SaveChanges();
         }
 
+        public void SeedProduction()
+        {
+            _ctx.Database.EnsureCreated();
+        }
     }
 }

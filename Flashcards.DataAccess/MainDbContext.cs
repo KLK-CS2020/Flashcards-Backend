@@ -21,7 +21,6 @@ namespace Flashcards.DataAccess
             modelBuilder.Entity<CardEntity>()
                 .HasOne(c => c.Deck)
                 .WithMany(d => d.Cards);
-            
         }
     }
 }
