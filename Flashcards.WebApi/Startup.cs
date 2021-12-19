@@ -167,6 +167,14 @@ namespace Flashcards.WebApi
             app.UseCors("production-cors");*/
             app.UseCors();
             
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+            
             app.UseRouting();
 
             app.UseAuthorization();
