@@ -143,13 +143,16 @@ namespace Flashcards.WebApi
                 new DbSeeder(context).SeedDevelopment();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
-                new SecurityMemoryInitializer().Initialize(securityContext);
+                
                 app.UseCors("Dev-cors");
             }
-           
+            else
+            {
                 app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
-            
+                new SecurityMemoryInitializer().Initialize(securityContext);
+            }
+
 
             app.UseHttpsRedirection();
 
