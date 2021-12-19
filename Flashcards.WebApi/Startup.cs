@@ -110,20 +110,31 @@ namespace Flashcards.WebApi
 
             services.AddCors(options =>
             {
+                /*
                 options.AddPolicy("Dev-cors", policy =>
                 {
                     policy.WithOrigins("http://localhost:4200")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
+                */
                 
-                options.AddPolicy("production-cors", policy =>
+                /*options.AddPolicy("production-cors", policy =>
                 {
                     policy
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                });
+                });*/
+                
+                options.AddPolicy("aa",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowAnyOrigin();
+                    });
                 
                 
                 
@@ -167,11 +178,22 @@ namespace Flashcards.WebApi
                 new SecurityMemoryInitializer().Initialize(securityContext);
             }
 
-          //  app.UseRouting();
+          /*///*  app.UseRouting();
             app.UseCors("production-cors");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });#1#*/
+          app.UseHttpsRedirection();
+
+          app.UseRouting();
+
+          app.UseAuthentication();
+
+          app.UseAuthorization();
+      
+          app.UseCors("aa");
+
+          app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
