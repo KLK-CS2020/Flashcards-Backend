@@ -144,7 +144,6 @@ namespace Flashcards.WebApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SecurityContext securityContext,
             MainDbContext context)
         {
-            app.UseCors();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -155,16 +154,11 @@ namespace Flashcards.WebApi
             }
             else
             {
-                app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
-               
             }
             
-           
-            app.UseCors("production-cors");
-               new DbSeeder(context).SeedDevelopment();
-               new SecurityMemoryInitializer().Initialize(securityContext);
+            
             
             app.UseHttpsRedirection();
             
