@@ -147,7 +147,9 @@ namespace Flashcards.WebApi
 
             if (env.IsProduction())
             {
-                new DbSeeder(context).SeedProduction();
+                //new DbSeeder(context).SeedProduction();
+                context.Database.EnsureCreated();
+                context.SaveChanges();
                 app.UseCors("Prod-cors");
             }
 
