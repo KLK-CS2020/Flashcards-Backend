@@ -157,16 +157,22 @@ namespace Flashcards.WebApi
             {
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
-                app.UseCors("AllowRemote");
-                app.UseCors("production-cors");
+               
             }
             
             new DbSeeder(context).SeedDevelopment();
             new SecurityMemoryInitializer().Initialize(securityContext);
             /*app.UseCors("AllowRemote");
             app.UseCors("production-cors");*/
-            app.UseCors();
             
+            
+           
+            
+            app.UseRouting();
+            //test
+            app.UseCors();
+            app.UseCors("AllowRemote");
+            app.UseCors("production-cors");
             app.UseCors(builder =>
             {
                 builder
@@ -174,9 +180,6 @@ namespace Flashcards.WebApi
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });
-            
-            app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
