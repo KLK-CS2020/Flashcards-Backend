@@ -146,12 +146,11 @@ namespace Flashcards.WebApi
                 
                 app.UseCors("Dev-cors");
             }
-            else
-            {
+           
                 app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
-            }
+            
 
 
             app.UseHttpsRedirection();
