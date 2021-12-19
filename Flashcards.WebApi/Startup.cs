@@ -108,7 +108,7 @@ namespace Flashcards.WebApi
 
             services.AddDbContext<SecurityContext>(options => { options.UseSqlite("Data Source = auth.db"); });
 
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
                 options.AddPolicy("Dev-cors", policy =>
                 {
@@ -127,8 +127,16 @@ namespace Flashcards.WebApi
                 
                 
                 
+            });*/
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
             });
-            
+
             /*services.AddCors(options =>
             {
                 options.AddPolicy("AllowRemote",
@@ -151,7 +159,7 @@ namespace Flashcards.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
                 
-                app.UseCors("Dev-cors");
+              //  app.UseCors("Dev-cors");
             }
             else
             {
@@ -161,12 +169,17 @@ namespace Flashcards.WebApi
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-            app.UseCors("production-cors");
+            /*app.UseRouting();
+          //  app.UseCors("production-cors");
+            app.UseCors();
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization();*/
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseCors();
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseMvc();
+           // app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
