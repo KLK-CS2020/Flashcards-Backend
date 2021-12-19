@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Flashcards.WebApi.Controllers
 {
+    [EnableCors("production-cors")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
