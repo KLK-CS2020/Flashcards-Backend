@@ -119,8 +119,9 @@ namespace Flashcards.WebApi
                 
                 options.AddPolicy("production-cors", policy =>
                 {
-                    policy.
-                        AllowAnyOrigin().AllowAnyHeader()
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
                 
@@ -154,9 +155,9 @@ namespace Flashcards.WebApi
             }
             else
             {
+                app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
-               
             }
             
             /*app.UseCors("AllowRemote");
@@ -165,11 +166,11 @@ namespace Flashcards.WebApi
             
            
             
-            app.UseRouting();
+            //app.UseRouting();
             
             //test
             
-            app.UseCors("production-cors");
+            //app.UseCors("production-cors");
             /*app.UseCors(builder =>
             {
                 builder
@@ -177,6 +178,15 @@ namespace Flashcards.WebApi
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });*/
+            //app.UseAuthorization();
+
+            //app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
