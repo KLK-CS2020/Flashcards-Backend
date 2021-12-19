@@ -110,17 +110,17 @@ namespace Flashcards.WebApi
 
             services.AddCors(options =>
             {
-                /*options.AddPolicy("Dev-cors", policy =>
+                options.AddPolicy("Dev-cors", policy =>
                 {
                     policy.WithOrigins("http://localhost:4200")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                });*/
+                });
                 
                 options.AddPolicy("production-cors", policy =>
                 {
-                    policy.
-                        WithOrigins("https://memorise-klk.web.app", "https://memorise-klk.firebaseapp.com" )
+                    policy
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -150,21 +150,43 @@ namespace Flashcards.WebApi
                 new DbSeeder(context).SeedDevelopment();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
-               // app.UseCors("Dev-cors");
+                
+                app.UseCors("Dev-cors");
             }
             else
             {
+                app.UseCors("production-cors");
                 new DbSeeder(context).SeedDevelopment();
                 new SecurityMemoryInitializer().Initialize(securityContext);
             }
             
+            /*app.UseCors("AllowRemote");
+            app.UseCors("production-cors");*/
             
+            
+           
+            
+            //app.UseRouting();
+            
+            //test
+            
+            //app.UseCors("production-cors");
+            /*app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });*/
+            //app.UseAuthorization();
+
+            //app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             
             app.UseHttpsRedirection();
-            
-            
+
             app.UseRouting();
-            app.UseCors("production-cors");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
