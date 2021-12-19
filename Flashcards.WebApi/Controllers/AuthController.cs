@@ -21,9 +21,7 @@ namespace Flashcards.WebApi.Controllers
         {
             _securityService = securityService;
         }
-       
-
-        [EnableCors("production-cors")]
+        
         // POST: api/Login
         [AllowAnonymous] //people cant log in not being logged in
         [HttpPost(nameof(Login))]
@@ -40,7 +38,6 @@ namespace Flashcards.WebApi.Controllers
             
         }
         
-        [EnableCors("production-cors")]
         [AllowAnonymous]
         [HttpPost(nameof(Register))]
         public ActionResult<Boolean> Register([FromBody] LoginDto loginDto)
