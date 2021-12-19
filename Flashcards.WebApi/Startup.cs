@@ -120,8 +120,7 @@ namespace Flashcards.WebApi
                 options.AddPolicy("production-cors", policy =>
                 {
                     policy.
-                        WithOrigins("https://memorise-klk.web.app")
-                        .AllowAnyHeader()
+                        AllowAnyOrigin().AllowAnyHeader()
                         .AllowAnyMethod();
                 });
                 
@@ -129,13 +128,13 @@ namespace Flashcards.WebApi
                 
             });
             
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
                 options.AddPolicy("AllowRemote",
                     builder => builder
                         .WithOrigins("https://memorise-klk.firebaseapp.com",  "https://memorise-klk.web.app").AllowAnyHeader().AllowAnyMethod()
                 );
-            });
+            });*/
         }
 
 
@@ -160,8 +159,6 @@ namespace Flashcards.WebApi
                
             }
             
-            new DbSeeder(context).SeedDevelopment();
-            new SecurityMemoryInitializer().Initialize(securityContext);
             /*app.UseCors("AllowRemote");
             app.UseCors("production-cors");*/
             
@@ -169,17 +166,17 @@ namespace Flashcards.WebApi
            
             
             app.UseRouting();
+            
             //test
-            app.UseCors();
-            app.UseCors("AllowRemote");
+            
             app.UseCors("production-cors");
-            app.UseCors(builder =>
+            /*app.UseCors(builder =>
             {
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
-            });
+            });*/
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
