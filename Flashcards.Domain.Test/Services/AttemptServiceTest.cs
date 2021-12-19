@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Flashcards_backend.Core.Filtering;
 using Flashcards_backend.Core.IServices;
 using Flashcards_backend.Core.Models;
 using Flashcards.Domain.IRepositories;
@@ -74,6 +75,85 @@ namespace Flashcards.Domain.Test.Services
             
             var ex = Assert.Throws<InvalidDataException>(() => _service.Get(userId, cardId, quantity));
             Assert.Equal("quantity must be at least 1", ex.Message);
+        }
+        
+        [Fact]
+        public void GetForUser_UserIdLessThan0_ThrowsException()
+        {
+            var userId = -1;
+            var filter = new Filter();
+            
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetForUser(userId, filter));
+            Assert.Equal("userId cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void GetForUser_CurrentPageLessThan1_ThrowsException()
+        {
+            var userId = 1;
+            var filter = new Filter
+            {
+                CurrentPage = 0,
+                ItemsPrPage = 1
+            };
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetForUser(userId, filter));
+            Assert.Equal("current page must be at least 1", ex.Message);
+        }
+        
+        [Fact]
+        public void GetForUser_ItemsPerPageLessThan1_ThrowsException()
+        {
+            var userId = 1;
+            var filter = new Filter
+            {
+                CurrentPage = 1,
+                ItemsPrPage = 0
+            };
+            var ex = Assert.Throws<InvalidDataException>(() => _service.GetForUser(userId, filter));
+            Assert.Equal("there must be at least 1 item per page", ex.Message);
+        }
+
+        [Fact]
+        public void GetForUser_ReturnsActivityListWithDatesFromToday()
+        {
+            var userId = 1;
+            var attempts = new List<Attempt>();
+
+            var filter = new Filter
+            {
+                CurrentPage = 1,
+                ItemsPrPage = 3
+            };
+            _mock.Setup(r => r.GetForUser(userId)).Returns(attempts);
+
+            var expected = DateTime.Now.Date;
+            
+            var actual = _service.GetForUser(userId, filter)[0].Date.Date;
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void GetForUser_ReturnsNumberOfElementsFromFilter()
+        {
+            var userId = 1;
+            var attempts = new List<Attempt>();
+            _mock.Setup(r => r.GetForUser(userId)).Returns(attempts);
+            
+            var filter = new Filter
+            {
+                CurrentPage = 1,
+                ItemsPrPage = 6
+            };
+            var actual = _service.GetForUser(userId, filter);
+            Assert.Equal(6, actual.Count);
+            
+            filter = new Filter
+            {
+                CurrentPage = 2,
+                ItemsPrPage = 10
+            };
+            actual = _service.GetForUser(userId, filter);
+            Assert.Equal(10, actual.Count);
         }
 
         [Fact]
