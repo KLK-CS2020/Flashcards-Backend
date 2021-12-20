@@ -203,6 +203,18 @@ namespace Flashcards.DataAccess
         public void SeedProduction()
         {
             _ctx.Database.EnsureCreated();
+            _ctx.Decks.Add(new DeckEntity
+            {
+                Id = 1,
+                Name = "Maths",
+                Description = "summing the numbers",
+                isPublic = true,
+                UserEntity = new UserEntity {Id = 1},
+                Cards = new List<CardEntity>(),
+                WasCopied = false
+            });
+            _ctx.SaveChanges();
+
         }
     }
 }
