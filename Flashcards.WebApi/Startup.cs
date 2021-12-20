@@ -134,6 +134,11 @@ namespace Flashcards.WebApi
                 new SecurityMemoryInitializer().Initialize(securityContext);
                 app.UseCors("Dev-cors");
             }
+            else
+            {
+                new DbSeeder(context).SeedProduction();
+                new SecurityMemoryInitializer().Initialize(securityContext);
+            }
 
             app.UseHttpsRedirection();
 
