@@ -120,8 +120,8 @@ namespace Flashcards.WebApi
                 options.AddPolicy("production-cors", policy =>
                 {
                     policy
-                        .WithOrigins("https://morizeea.web.app")
-                        /*.AllowAnyOrigin()*/
+                        /*.WithOrigins("https://morizeea.web.app")*/
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
