@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Flashcards.DataAccess\Flashcards.DataAccess.csproj" />
       <ProjectReference Include="..\Flashcards.Domain\Flashcards.Domain.csproj" />
     </ItemGroup>
 
