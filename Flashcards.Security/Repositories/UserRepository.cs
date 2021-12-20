@@ -3,6 +3,8 @@ using System.Linq;
 using Flashcards.Domain.IRepositories;
 using Flashcards.Security.Models;
 using Flashcards_backend.Core.Models;
+using Flashcards.DataAccess;
+using Flashcards.DataAccess.Entities;
 
 
 namespace Flashcards.Security.Repositories
@@ -10,10 +12,12 @@ namespace Flashcards.Security.Repositories
     public class UserRepository: IUserRepository
     {
         private readonly SecurityContext _context;
+        private readonly MainDbContext _ctx;
 
-        public UserRepository(SecurityContext context)
+        public UserRepository(SecurityContext context, MainDbContext ctx)
         {
             _context = context;
+            _ctx = ctx;
         }
 
         public List<User> GetAll()
@@ -37,6 +41,14 @@ namespace Flashcards.Security.Repositories
                 PasswordSalt = user.PasswordSalt
             });
             _context.SaveChanges();
+
+            _ctx.Users.Add(new UserEntity
+            {
+                Email = user.Email,
+                PasswordHash = user.PasswordHash,
+                PasswordSalt = user.PasswordSalt
+            });
+            _ctx.SaveChanges();
             return createdUser != null;
         }
     }
