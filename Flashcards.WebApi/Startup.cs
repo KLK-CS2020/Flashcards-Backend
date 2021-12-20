@@ -110,51 +110,24 @@ namespace Flashcards.WebApi
 
             services.AddCors(options =>
             {
-                /*
                 options.AddPolicy("Dev-cors", policy =>
                 {
                     policy.WithOrigins("http://localhost:4200")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
-                */
                 
-                /*options.AddPolicy("production-cors", policy =>
+                options.AddPolicy("production-cors", policy =>
                 {
                     policy
-                        .AllowAnyOrigin()
+                        .WithOrigins("https://memorise-klk.firebaseapp.com",  "https://memorise-klk.web.app",
+                            "https://morizeea.web.app/", "https://morizeea.firebaseapp.com/")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                });*/
-                
-                options.AddPolicy("aa",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowAnyOrigin();
-                    });
-                
-                
-                
-            });
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
+                
             });
-
-            /*services.AddCors(options =>
-            {
-                options.AddPolicy("AllowRemote",
-                    builder => builder
-                        .WithOrigins("https://memorise-klk.firebaseapp.com",  "https://memorise-klk.web.app").AllowAnyHeader().AllowAnyMethod()
-                );
-            });*/
+            
         }
 
 
@@ -166,34 +139,26 @@ namespace Flashcards.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                new SecurityMemoryInitializer().Initialize(securityContext);
                 new DbSeeder(context).SeedDevelopment();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Flashcards.WebApi v1"));
-                
-              //  app.UseCors("Dev-cors");
+                app.UseCors("Dev-cors");
             }
             else
             {
-                new DbSeeder(context).SeedDevelopment();
+                app.UseCors("production-cors");
                 new SecurityMemoryInitializer().Initialize(securityContext);
+                new DbSeeder(context).SeedDevelopment();
             }
 
-          /*///*  app.UseRouting();
-            app.UseCors("production-cors");
-            app.UseAuthentication();
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });#1#*/
-          app.UseHttpsRedirection();
 
-          app.UseRouting();
-
-          app.UseAuthentication();
-
-          app.UseAuthorization();
-      
-          app.UseCors("aa");
-
-          app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
