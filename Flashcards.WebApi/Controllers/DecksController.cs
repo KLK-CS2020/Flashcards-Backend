@@ -10,6 +10,7 @@ using Flashcards_backend.Core.Models;
 using Flashcards.WebApi.Dtos.Card;
 using Flashcards.WebApi.Dtos.Deck;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ namespace Flashcards.WebApi.Controllers
             _service = service;
         }
         
+        [EnableCors("Production-cors")]
         [HttpGet("GetAllPublic")]
         public ActionResult<List<GetDeckDto>> GetAllPublic(string search, [FromQuery] Filter filter)
         {

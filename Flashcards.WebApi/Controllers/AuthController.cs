@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Flashcards.Security;
 using Flashcards.Security.IServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace Flashcards.WebApi.Controllers
        
 
         // POST: api/Login
+        [EnableCors("Production-cors")]
         [AllowAnonymous] //people cant log in not being logged in
         [HttpPost(nameof(Login))]
         public ActionResult<TokenDto> Login([FromBody] LoginDto loginDto)
