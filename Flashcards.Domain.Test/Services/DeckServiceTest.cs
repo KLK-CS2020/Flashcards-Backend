@@ -233,8 +233,8 @@ namespace Flashcards.Domain.Test.Services
             };
             _mock.Setup(repo => repo.Create(passedDeck)).Returns(expectedDeck);
             _mockUser.Setup(repo => repo.GetAll()).Returns(new List<User>() {new User {Id = 1}});
-            var actualStudent = _service.Create(passedDeck);
-            Assert.Equal(expectedDeck, actualStudent);
+            var actual = _service.Create(passedDeck);
+            Assert.Equal(expectedDeck, actual);
         }
 
         [Fact]
